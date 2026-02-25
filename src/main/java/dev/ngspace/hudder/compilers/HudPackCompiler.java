@@ -45,8 +45,7 @@ public class HudPackCompiler extends AHudCompiler<HudPack> {
 			elms.clear();
 			HudPackHudState state = new HudPackHudState();
 			for (var point : pack.hudpackpoints) {
-				if (point.config.condition()==null||
-						Boolean.TRUE.equals(DataVariableRegistry.getBoolean(point.config.condition())))
+				if (point.config.conditions()==null||checkConditions(point.config.conditions()))
 					point.execute(state);
 			}
 			return state.toResult(elms);
@@ -54,6 +53,11 @@ public class HudPackCompiler extends AHudCompiler<HudPack> {
 			e.printStackTrace();
 			return HudInformation.of(e.getMessage());
 		}
+	}
+
+	private boolean checkConditions(String[] conditions) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 	@Override
