@@ -56,8 +56,11 @@ public class HudPackCompiler extends AHudCompiler<HudPack> {
 	}
 
 	private boolean checkConditions(String[] conditions) {
-		// TODO Auto-generated method stub
-		return false;
+		for (String cond : conditions) {
+			if (Boolean.FALSE.equals(DataVariableRegistry.getBoolean(cond)))
+				return false;
+		}
+		return true;
 	}
 
 	@Override
