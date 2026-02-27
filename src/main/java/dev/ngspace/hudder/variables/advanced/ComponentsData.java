@@ -12,6 +12,7 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.contents.TranslatableContents;
 import net.minecraft.resources.Identifier;
+import net.minecraft.world.item.ItemCooldowns.CooldownInstance;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.ItemEnchantments;
@@ -41,20 +42,17 @@ public class ComponentsData extends HashMap<String, Object> {
 				yield component == null ? 0 : component.seconds() * 20;
 			}
 			case "cooldown": {
-				var group = player.getCooldowns().getCooldownGroup(item);
-				var acc = ((ItemCooldownsAccessor)player.getCooldowns());
-				var cooldown = acc.getCooldowns().get(group);
+				Identifier group = player.getCooldowns().getCooldownGroup(item);
+				ItemCooldownsAccessor acc = ((ItemCooldownsAccessor)player.getCooldowns());
+				CooldownInstance cooldown = acc.getCooldowns().get(group);
 				if (cooldown==null)
 					yield 0;
-				var totaltime = (cooldown.endTime()-acc.getTickCount()) - (cooldown.startTime()-acc.getTickCount());
+				int totaltime = (cooldown.endTime()-acc.getTickCount()) - (cooldown.startTime()-acc.getTickCount());
 				yield totaltime - (acc.getTickCount()-cooldown.startTime());
 			}
 
 			case "trim":
-				yield data.get(DataComponents.TRIM) ==null ? null : new Object() {
-					String material = data.get(DataComponents.TRIM).material().value().assets().base().suffix();
-					String pattern = data.get(DataComponents.TRIM).pattern().value().assetId().toString();
-				};
+				yield data.get(DataComponents.TRIM) ==null ? null : new TrimHolder(data);
 
 			case "enchantable":
 				var enchantable = data.get(DataComponents.ENCHANTABLE);
@@ -112,5 +110,17 @@ public class ComponentsData extends HashMap<String, Object> {
 			this.level = d.getLevel(e);
 		}
 		@Override public String toString() {return EnchantmentInfo.getName(e.description()) + " " + level;}
+	}
+	public static class TrimHolder {
+		public String material;
+		public String pattern;
+		public TrimHolder(DataComponentMap data) {
+			material = data.get(DataComponents.TRIM).material().value().assets().base().suffix();
+			pattern = data.get(DataComponents.TRIM).pattern().value().assetId().toString();
+		}
+		@Override
+		public String toString() {
+			return "TrimHolder [material=" + material + ", pattern=" + pattern + "]";
+		}
 	}
 }
