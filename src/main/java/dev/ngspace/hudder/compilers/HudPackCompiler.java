@@ -4,11 +4,11 @@ import java.io.IOException;
 import java.util.HashMap;
 
 import dev.ngspace.hudder.Hudder;
+import dev.ngspace.hudder.api.functionsandconsumers.ArrayElementManager;
 import dev.ngspace.hudder.api.variableregistry.DataVariableRegistry;
 import dev.ngspace.hudder.compilers.abstractions.AHudCompiler;
 import dev.ngspace.hudder.compilers.utils.CompileException;
 import dev.ngspace.hudder.compilers.utils.HudInformation;
-import dev.ngspace.hudder.compilers.utils.functionandconsumerapi.ArrayElementManager;
 import dev.ngspace.hudder.config.HudderConfig;
 import dev.ngspace.hudder.hudpacks.HudPack;
 import dev.ngspace.hudder.hudpacks.HudPackHudState;

@@ -3,12 +3,11 @@ package dev.ngspace.hudder.api.functionsandconsumers;
 import java.util.HashMap;
 
 import dev.ngspace.hudder.Hudder;
+import dev.ngspace.hudder.api.functionsandconsumers.FunctionAndConsumerAPI.TranslatedItemStack;
 import dev.ngspace.hudder.api.variableregistry.DataVariableRegistry;
 import dev.ngspace.hudder.compilers.abstractions.AHudCompiler;
 import dev.ngspace.hudder.compilers.utils.Compilers;
 import dev.ngspace.hudder.compilers.utils.HudInformation;
-import dev.ngspace.hudder.compilers.utils.functionandconsumerapi.FunctionAndConsumerAPI;
-import dev.ngspace.hudder.compilers.utils.functionandconsumerapi.FunctionAndConsumerAPI.TranslatedItemStack;
 import dev.ngspace.hudder.main.HudCompilationManager;
 import dev.ngspace.hudder.utils.HudFileUtils;
 import net.minecraft.client.Minecraft;

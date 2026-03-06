@@ -15,11 +15,11 @@ import com.google.gson.Gson;
 import com.mojang.blaze3d.platform.NativeImage;
 
 import dev.ngspace.hudder.Hudder;
+import dev.ngspace.hudder.api.functionsandconsumers.FunctionAndConsumerAPI;
+import dev.ngspace.hudder.api.functionsandconsumers.FunctionAndConsumerAPI.BindableConsumer;
+import dev.ngspace.hudder.api.functionsandconsumers.FunctionAndConsumerAPI.BindableFunction;
+import dev.ngspace.hudder.api.functionsandconsumers.FunctionAndConsumerAPI.Binder;
 import dev.ngspace.hudder.compilers.HudPackCompiler;
-import dev.ngspace.hudder.compilers.utils.functionandconsumerapi.FunctionAndConsumerAPI;
-import dev.ngspace.hudder.compilers.utils.functionandconsumerapi.FunctionAndConsumerAPI.BindableConsumer;
-import dev.ngspace.hudder.compilers.utils.functionandconsumerapi.FunctionAndConsumerAPI.BindableFunction;
-import dev.ngspace.hudder.compilers.utils.functionandconsumerapi.FunctionAndConsumerAPI.Binder;
 import dev.ngspace.hudder.compilers.utils.javascript.JavaScriptEngine;
 import dev.ngspace.hudder.utils.HudFileUtils;
 import dev.ngspace.ngsmcconfig.options.AbstractNGSMCConfigOption;

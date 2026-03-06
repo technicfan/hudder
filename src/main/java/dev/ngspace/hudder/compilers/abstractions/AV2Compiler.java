@@ -4,13 +4,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 import dev.ngspace.hudder.compilers.utils.TextPos;
+import dev.ngspace.hudder.api.functionsandconsumers.FunctionAndConsumerAPI;
+import dev.ngspace.hudder.api.functionsandconsumers.FunctionAndConsumerAPI.BindableConsumer;
+import dev.ngspace.hudder.api.functionsandconsumers.FunctionAndConsumerAPI.BindableFunction;
+import dev.ngspace.hudder.api.functionsandconsumers.FunctionAndConsumerAPI.Binder;
 import dev.ngspace.hudder.compilers.utils.CompileException;
 import dev.ngspace.hudder.compilers.utils.CompileState;
 import dev.ngspace.hudder.compilers.utils.HudInformation;
-import dev.ngspace.hudder.compilers.utils.functionandconsumerapi.FunctionAndConsumerAPI;
-import dev.ngspace.hudder.compilers.utils.functionandconsumerapi.FunctionAndConsumerAPI.BindableConsumer;
-import dev.ngspace.hudder.compilers.utils.functionandconsumerapi.FunctionAndConsumerAPI.BindableFunction;
-import dev.ngspace.hudder.compilers.utils.functionandconsumerapi.FunctionAndConsumerAPI.Binder;
 import dev.ngspace.hudder.config.HudderConfig;
 import dev.ngspace.hudder.main.HudCompilationManager;
 import dev.ngspace.hudder.v2runtime.V2Runtime;

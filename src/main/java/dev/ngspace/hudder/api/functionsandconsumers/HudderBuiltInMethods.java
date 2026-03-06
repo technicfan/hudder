@@ -3,7 +3,6 @@ package dev.ngspace.hudder.api.functionsandconsumers;
 import java.io.IOException;
 
 import dev.ngspace.hudder.Hudder;
-import dev.ngspace.hudder.compilers.utils.functionandconsumerapi.FunctionAndConsumerAPI;
 import dev.ngspace.hudder.uielements.BuiltInTextureElement;
 import dev.ngspace.hudder.uielements.ColorVerticesElement;
 import dev.ngspace.hudder.uielements.GameHudElement;

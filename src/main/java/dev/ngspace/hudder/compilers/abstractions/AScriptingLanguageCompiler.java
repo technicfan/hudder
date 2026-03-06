@@ -6,10 +6,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 import dev.ngspace.hudder.Hudder;
+import dev.ngspace.hudder.api.functionsandconsumers.ArrayElementManager;
 import dev.ngspace.hudder.api.variableregistry.DataVariableRegistry;
 import dev.ngspace.hudder.compilers.utils.CompileException;
 import dev.ngspace.hudder.compilers.utils.HudInformation;
-import dev.ngspace.hudder.compilers.utils.functionandconsumerapi.ArrayElementManager;
 import dev.ngspace.hudder.config.HudderConfig;
 import dev.ngspace.hudder.main.HudCompilationManager;
 import dev.ngspace.hudder.uielements.AUIElement;

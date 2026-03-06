@@ -1,4 +1,4 @@
-package dev.ngspace.hudder.compilers.utils.functionandconsumerapi;
+package dev.ngspace.hudder.api.functionsandconsumers;
 
 import java.util.ArrayList;
 
