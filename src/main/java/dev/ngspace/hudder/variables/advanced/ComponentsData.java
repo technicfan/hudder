@@ -17,7 +17,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.ItemEnchantments;
 
-@SuppressWarnings("unused")
 public class ComponentsData extends HashMap<String, Object> {
 	
 	private static final long serialVersionUID = 229002063971831208L;

@@ -7,12 +7,12 @@ import dev.ngspace.hudder.compilers.utils.functionandconsumerapi.FunctionAndCons
 import dev.ngspace.hudder.uielements.BuiltInTextureElement;
 import dev.ngspace.hudder.uielements.ColorVerticesElement;
 import dev.ngspace.hudder.uielements.GameHudElement;
+import dev.ngspace.hudder.uielements.GameHudElement.GuiType;
 import dev.ngspace.hudder.uielements.ItemElement;
 import dev.ngspace.hudder.uielements.TextElement;
 import dev.ngspace.hudder.uielements.Texture9SliceElement;
 import dev.ngspace.hudder.uielements.TextureElement;
 import dev.ngspace.hudder.uielements.TextureVerticesElement;
-import dev.ngspace.hudder.uielements.GameHudElement.GuiType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.Identifier;
@@ -93,6 +93,24 @@ public class HudderBuiltInMethods {private HudderBuiltInMethods() {}
 		
 		api.registerConsumer((e,a,s)->e.addUIElement(new ItemElement(s[1].asInt(), s[2].asInt(),new ItemStack(BuiltInRegistries.ITEM.getValue(
 				Identifier.tryParse(s[0].asString()))),s[3].asFloat(), false)),"drawItem", "item");
+
+		api.registerConsumer((e,a,s)->e.addUIElement(new ItemElement(s[0].asInt(),s[1].asInt(),mc.player.getInventory()
+				.getItem(mc.player.getInventory().getSelectedSlot()),s.length>2 ? s[2].asFloat() : 1, s.length<=3 || s[3].asBoolean())),"hand","selectedslot");
+
+		api.registerConsumer((e,a,s)->e.addUIElement(new ItemElement(s[0].asInt(),s[1].asInt(),mc.player.getInventory()
+				.getItem(39),s.length>2 ? s[2].asFloat() : 1, s.length<=3 || s[3].asBoolean())),"hat", "helmet");
+		
+		api.registerConsumer((e,a,s)->e.addUIElement(new ItemElement(s[0].asInt(),s[1].asInt(),mc.player.getInventory()
+				.getItem(38),s.length>2 ? s[2].asFloat() : 1, s.length<=3 || s[3].asBoolean())),"chestplate");
+		
+		api.registerConsumer((e,a,s)->e.addUIElement(new ItemElement(s[0].asInt(),s[1].asInt(),mc.player.getInventory()
+				.getItem(37),s.length>2 ? s[2].asFloat() : 1, s.length<=3 || s[3].asBoolean())),"leggings","pants");
+		
+		api.registerConsumer((e,a,s)->e.addUIElement(new ItemElement(s[0].asInt(),s[1].asInt(),mc.player.getInventory()
+				.getItem(36),s.length>2 ? s[2].asFloat() : 1, s.length<=3 || s[3].asBoolean())),"boots");
+		
+		api.registerConsumer((e,a,s)->e.addUIElement(new ItemElement(s[0].asInt(),s[1].asInt(),mc.player.getOffhandItem(),
+				s.length>2 ? s[2].asFloat() : 1, s.length<=3 || s[3].asBoolean())),"offhand");
 		
 		//Slot
 		

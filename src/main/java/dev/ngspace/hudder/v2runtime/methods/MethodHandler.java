@@ -20,9 +20,6 @@ public class MethodHandler {
 	public static final String[] Var = {"[Variable]"};
 	public static final String[] TextArg = {"[Text]"};
 	public MethodHandler() {
-		//Inventory Rendering
-		bindConsumer(new ItemStackMethods(),"hand","selectedslot","hat", "helmet", "chestplate", "leggings",
-				"pants", "boots", "offhand");
 		
 		//Text and compiling
 		bindConsumer((c,m,a,r,t,ch,s)->m.setTextLocation(t,(float) (s.length>0?s[0].asDouble():c.scale())),

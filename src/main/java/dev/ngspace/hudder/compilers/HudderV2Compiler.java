@@ -154,7 +154,6 @@ public class HudderV2Compiler extends AV2Compiler {
 							conditionOrValue.setLength(0);
 						} else if (c=='%') {
 							var pos = getPosition(charPosition, savedind, text);
-							Hudder.log(conds.get(0));
 							conds.add(conditionOrValue.toString());
 							runtime.addRuntimeElement(new ConditionV2RuntimeElement(
 									conds.toArray(new String[conds.size()]), this, info,
