@@ -4,8 +4,9 @@ import java.util.Collection;
 import java.util.Objects;
 
 import dev.ngspace.hudder.compilers.abstractions.AV2Compiler;
-import dev.ngspace.hudder.compilers.utils.CompileException;
 import dev.ngspace.hudder.compilers.utils.CompileState;
+import dev.ngspace.hudder.exceptions.CompileException;
+import dev.ngspace.hudder.exceptions.ExecutionException;
 import dev.ngspace.hudder.utils.ObjectWrapper;
 
 public abstract class AV2Value implements ObjectWrapper {
@@ -29,7 +30,7 @@ public abstract class AV2Value implements ObjectWrapper {
 	}
 
 	
-	public boolean compare(AV2Value other, String comparisonOperator) throws CompileException {
+	public boolean compare(AV2Value other, String comparisonOperator) throws ExecutionException {
 		Object val1 = get();
 		Object val2 = other.get();
 		if (!other.hasValue()||!hasValue()) {
@@ -37,7 +38,8 @@ public abstract class AV2Value implements ObjectWrapper {
 				return other.hasValue()==hasValue();
 			else if (comparisonOperator.equals("!="))
 				return other.hasValue()!=hasValue();
-			else throw new CompileException("Can not compare null values using the "+comparisonOperator+" operator.");
+			else throw new ExecutionException("Can not compare null values using the "+comparisonOperator+" operator.",
+					line, charpos);
 		}
 		boolean areNums = false;
 		double dou1 = 0;
@@ -68,22 +70,22 @@ public abstract class AV2Value implements ObjectWrapper {
 	
 	
 	
-	@Override public boolean asBoolean() throws CompileException {return asType(Boolean.class);}
-	@Override public double asDouble() throws CompileException {return asType(Number.class).doubleValue();}
-	@Override public String asString() throws CompileException {return asType(String.class);}
+	@Override public boolean asBoolean() throws ExecutionException {return asType(Boolean.class);}
+	@Override public double asDouble() throws ExecutionException {return asType(Number.class).doubleValue();}
+	@Override public String asString() throws ExecutionException {return asType(String.class);}
 	
 	
-	@Override public Object[] asArray() throws CompileException {
+	@Override public Object[] asArray() throws ExecutionException {
 		Object get = get();
 		if (get instanceof Collection<?> c) return c.toArray();
 		return (Object[]) get;
 	}
 	
 	
-	public <T> T asType(Class<T> clazz) throws CompileException {
+	public <T> T asType(Class<T> clazz) throws ExecutionException {
 		Object get = get();
 		if (clazz.isInstance(get)) return clazz.cast(get);
-		throw new CompileException(invalidTypeMessage(clazz.getSimpleName(), value, get), line, charpos);
+		throw new ExecutionException(invalidTypeMessage(clazz.getSimpleName(), value, get), line, charpos);
 	}
 	
 	
@@ -97,13 +99,13 @@ public abstract class AV2Value implements ObjectWrapper {
 	}
 	
 	public abstract void setValue(AV2Compiler compiler, Object value)
-			throws CompileException, UnsupportedOperationException;
+			throws ExecutionException, UnsupportedOperationException;
 
 	/**
 	 * Returns true if the variable has a value and false if it does not
 	 * @throws CompileException 
 	 */
-	public boolean hasValue() throws CompileException {return true;}
-	public abstract boolean isConstant() throws CompileException;
+	public boolean hasValue() throws ExecutionException {return true;}
+	public abstract boolean isConstant() throws ExecutionException;
 	@Override public String toString() {return value;}
 }

@@ -7,7 +7,8 @@ import dev.ngspace.hudder.Hudder;
 import dev.ngspace.hudder.compilers.abstractions.AV2Compiler;
 import dev.ngspace.hudder.compilers.utils.TextPos;
 import dev.ngspace.hudder.config.HudderConfig;
-import dev.ngspace.hudder.compilers.utils.CompileException;
+import dev.ngspace.hudder.exceptions.CompileException;
+import dev.ngspace.hudder.exceptions.ExecutionException;
 import dev.ngspace.hudder.utils.HudderUtils;
 import dev.ngspace.hudder.v2runtime.V2Runtime;
 import dev.ngspace.hudder.v2runtime.runtime_elements.BreakV2RuntimeElement;
@@ -29,7 +30,7 @@ public class HudderV2Compiler extends AV2Compiler {
 	public static final int HASHTAG_STATE = 4;
 
 	@Override public V2Runtime buildRuntime(HudderConfig info, String text, TextPos charPosition, String filename,
-			V2Runtime scope) throws CompileException {
+			V2Runtime scope) throws CompileException, ExecutionException {
 		V2Runtime runtime = new V2Runtime(this, scope);
 		
 		StringBuilder elemBuilder = new StringBuilder();
@@ -288,14 +289,18 @@ public class HudderV2Compiler extends AV2Compiler {
 					}
 					break;
 				}
-				default: throw new CompileException("Unknown compile state: " + compileState);
+				default: {
+					var pos = getPosition(charPosition, savedind, text);
+					throw new CompileException("Unknown compile state: " + compileState, pos.line(), pos.column());
+				}
 			}
 		}
 		
 		runtime.addRuntimeElement(new StringV2RuntimeElement(elemBuilder.toString(), false));
 		
 		if (compileState!=0) {
-			throw new CompileException(getCompilerErrorMessage(compileState));
+			var pos = getPosition(charPosition, savedind, text);
+			throw new CompileException(getCompilerErrorMessage(compileState), pos.line(), pos.column());
 		}
 		
 		return runtime;

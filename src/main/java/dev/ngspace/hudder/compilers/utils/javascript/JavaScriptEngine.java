@@ -15,7 +15,8 @@ import org.mozilla.javascript.WrappedException;
 
 import dev.ngspace.hudder.Hudder;
 import dev.ngspace.hudder.compilers.abstractions.IScriptingLanguageEngine;
-import dev.ngspace.hudder.compilers.utils.CompileException;
+import dev.ngspace.hudder.exceptions.CompileException;
+import dev.ngspace.hudder.exceptions.ExecutionException;
 import dev.ngspace.hudder.utils.ObjectWrapper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
@@ -110,18 +111,28 @@ public class JavaScriptEngine implements IScriptingLanguageEngine {
 	
 	
 
-	@Override public CompileException processException(Exception e) {
+	@Override public ExecutionException processException(Exception e) {
 		if (e instanceof RhinoException ex) {
-			String msg = "\u00A74"+(ex instanceof WrappedException wex ?
-					wex.getWrappedException().getMessage() :ex.getMessage())
-					+"\n\u00A7bat Line "+ex.lineNumber()+" at col "+ex.columnNumber();
-			return new CompileException(msg,-1,-1,ex);
+			String msg = ex instanceof WrappedException wex ?
+					wex.getWrappedException().getMessage() :ex.details();
+			return new ExecutionException(msg,ex.lineNumber()-1,ex.columnNumber(),ex);
+		}
+		if (e instanceof ExecutionException ex) return ex;
+		var ex = new WrappedException(e);
+		return new ExecutionException(e.getMessage(),ex.lineNumber()-1,ex.columnNumber(),e);
+	}
+	
+	
+
+	@Override public CompileException processCompileException(Exception e) {
+		if (e instanceof RhinoException ex) {
+			String msg = ex instanceof WrappedException wex ?
+					wex.getWrappedException().getMessage() :ex.details();
+			return new CompileException(msg,ex.lineNumber()-1,ex.columnNumber(),ex);
 		}
 		if (e instanceof CompileException ex) return ex;
 		var ex = new WrappedException(e);
-		String msg = "\u00A74"+e.getMessage()
-				+"\n\u00A7bat Line "+ex.lineNumber()+" at col "+ex.columnNumber();
-		return new CompileException(msg,-1,-1,ex);
+		return new CompileException(e.getMessage(),ex.lineNumber()-1,ex.columnNumber(),e);
 	}
 	
 
@@ -145,7 +156,7 @@ public class JavaScriptEngine implements IScriptingLanguageEngine {
 			if (value instanceof NativeJavaObject o) {this.value = o.unwrap();}
 		}
 
-		@Override public Object get() throws CompileException {return value==Undefined.instance?null:value;}
+		@Override public Object get() throws ExecutionException {return value==Undefined.instance?null:value;}
 		
 		@Override public String asString() {return Context.toString(value);}
 		@Override public double asDouble() {return Context.toNumber(value);}
@@ -154,7 +165,7 @@ public class JavaScriptEngine implements IScriptingLanguageEngine {
 		
 		@Override public String toString() {return Context.toString(value);}
 
-		@Override public <T> T asType(Class<T> clazz) throws CompileException {return clazz.cast(get());}
+		@Override public <T> T asType(Class<T> clazz) throws ExecutionException {return clazz.cast(get());}
 	}
 	
 }

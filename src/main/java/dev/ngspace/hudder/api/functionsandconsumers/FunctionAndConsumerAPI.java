@@ -6,7 +6,7 @@ import java.util.List;
 
 import dev.ngspace.hudder.Hudder;
 import dev.ngspace.hudder.compilers.abstractions.AHudCompiler;
-import dev.ngspace.hudder.compilers.utils.CompileException;
+import dev.ngspace.hudder.exceptions.ExecutionException;
 import dev.ngspace.hudder.utils.ObjectWrapper;
 import dev.ngspace.hudder.utils.ValueGetter;
 import dev.ngspace.hudder.variables.advanced.ComponentsData;
@@ -53,9 +53,13 @@ public class FunctionAndConsumerAPI {
 	public void registerUnsafeFunction(BindableFunction func, String... names) {
 		registerFunction((m,c,a)->{
 			if (!Hudder.config.unsafeoperations())
-				throw new CompileException("Called unsafe function with unsafe operations disabled!");
+				throw new SecurityException("Called unsafe function with unsafe operations disabled!");
 			return func.invoke(m,c,a);
 		}, names);
+	}
+	
+	public void registerDeprecatedFunction(String warning, BindableFunction func, String... names) {
+		registerFunction(new DeprecatedFunciton(warning, func, names), names);
 	}
 
 
@@ -69,18 +73,22 @@ public class FunctionAndConsumerAPI {
 	public void registerUnsafeConsumer(BindableConsumer cons, String... names) {
 		registerConsumer((m,c,a)->{
 			if (!Hudder.config.unsafeoperations())
-				throw new CompileException("Called unsafe method with unsafe operations disabled!");
+				throw new SecurityException("Called unsafe method with unsafe operations disabled!");
 			cons.invoke(m,c,a);
 		}, names);
+	}
+	
+	public void registerDeprecatedConsumer(String warning, BindableConsumer cons, String... names) {
+		registerConsumer(new DeprecatedConsumer(warning, cons, names), names);
 	}
 	
 	
 
 	@FunctionalInterface public interface BindableFunction {
-		public Object invoke(IUIElementManager man, AHudCompiler<?> comp, ObjectWrapper... args) throws CompileException;
+		public Object invoke(IUIElementManager man, AHudCompiler<?> comp, ObjectWrapper... args) throws ExecutionException;
 	}
 	@FunctionalInterface public interface BindableConsumer {
-		public void invoke(IUIElementManager man, AHudCompiler<?> comp, ObjectWrapper... args) throws CompileException;
+		public void invoke(IUIElementManager man, AHudCompiler<?> comp, ObjectWrapper... args) throws ExecutionException;
 	}
 
 	

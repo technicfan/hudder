@@ -1,7 +1,7 @@
 package dev.ngspace.hudder.v2runtime.values.modifiable;
 
 import dev.ngspace.hudder.compilers.abstractions.AV2Compiler;
-import dev.ngspace.hudder.compilers.utils.CompileException;
+import dev.ngspace.hudder.exceptions.ExecutionException;
 import dev.ngspace.hudder.v2runtime.V2Runtime;
 import dev.ngspace.hudder.v2runtime.values.AV2Value;
 
@@ -13,7 +13,7 @@ public class V2DynamicVar extends AV2Value {
 		this.runtime = runtime;
 	}
 	
-	@Override public Object get() throws CompileException {
+	@Override public Object get() throws ExecutionException {
 		return runtime.getVariable(value);
 	}
 	
@@ -21,14 +21,14 @@ public class V2DynamicVar extends AV2Value {
 		return !(runtime.getScoped(value)==null&&compiler.get(value)==null);
 	}
 
-	@Override public void setValue(AV2Compiler compiler, Object value) throws CompileException {
+	@Override public void setValue(AV2Compiler compiler, Object value) throws ExecutionException {
 		compiler.put(this.value, value);
 	}
 	
-	@Override public boolean isConstant() throws CompileException {return false;}
+	@Override public boolean isConstant() throws ExecutionException {return false;}
 
-	@Override public double asDouble() throws CompileException {
-		if (!hasValue()) throw new CompileException('"' + value + "\" has no set value!",line,charpos);
+	@Override public double asDouble() throws ExecutionException {
+		if (!hasValue()) throw new ExecutionException('"' + value + "\" has no set value!",line,charpos);
 		return super.asDouble();
 	}
 }

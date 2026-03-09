@@ -31,9 +31,9 @@ public class CompileState implements IUIElementManager {
 	public boolean hasReturned;
 
 	public CompileState(String string) {setTextLocation(string, Hudder.config.scale());}
-	public void addString(String txt, boolean cleanup) throws CompileException {addString(txt,pos,cleanup);}
+	public void addString(String txt, boolean cleanup) {addString(txt,pos,cleanup);}
 	
-	protected void addString(String txt, String pos, boolean cleanup) throws CompileException {
+	protected void addString(String txt, String pos, boolean cleanup) {
 		String text = txt;
 		if (cleanup) {
 			int buffer = Hudder.config.methodBuffer();
@@ -43,7 +43,7 @@ public class CompileState implements IUIElementManager {
 						if (text.startsWith("\r\n")) text = text.substring(2);
 						if (text.endsWith("\r\n")) text = text.substring(0, text.length() - 2);
 					} catch (StringIndexOutOfBoundsException e) {
-						throw new CompileException("Empty section \"" + pos + "\"");
+						throw new IllegalArgumentException("Empty section \"" + pos + "\"");
 					}
 			else text = text.trim();
 		}
@@ -53,7 +53,7 @@ public class CompileState implements IUIElementManager {
 			case TOPRIGHT: TRText+=text; break;
 			case BOTTOMRIGHT: BRText+=text; break;
 			case MUTE: break;
-			default: throw new CompileException("Unidentifiable meta state \"" + pos + "\"");
+			default: throw new IllegalArgumentException("Unidentifiable meta state \"" + pos + "\"");
 		}
 	}
 	
@@ -73,7 +73,7 @@ public class CompileState implements IUIElementManager {
 				elements.toArray(new AUIElement[elements.size()]));
 	}
 
-	public void combineWithResult(HudInformation compile, boolean combineText) throws CompileException {
+	public void combineWithResult(HudInformation compile, boolean combineText) {
 		if (combineText) {
 			addString(compile.TopLeftText(), TOPLEFT, false);        TLScale = compile.TLScale();
 			addString(compile.BottomLeftText(), BOTTOMLEFT, false);  BLScale = compile.BLScale();

@@ -7,8 +7,8 @@ import static dev.ngspace.hudder.hudpacks.HudPackHudState.TOPRIGHT;
 
 import java.io.IOException;
 
-import dev.ngspace.hudder.compilers.utils.CompileException;
 import dev.ngspace.hudder.compilers.utils.javascript.JavaScriptEngine;
+import dev.ngspace.hudder.exceptions.ExecutionException;
 
 public class HudPackPoint {
 	
@@ -22,7 +22,7 @@ public class HudPackPoint {
 		this.engine = engine;
 	}
 	
-	public void execute(HudPackHudState state) throws IOException, CompileException {
+	public void execute(HudPackHudState state) throws IOException, ExecutionException {
 		switch (config.type()) {
 			case TOPLEFT, BOTTOMLEFT, TOPRIGHT, BOTTOMRIGHT: 
 				state.addString(engine.callFunction(config.entry_function()).asString(), config.type());

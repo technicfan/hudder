@@ -1,6 +1,7 @@
 package dev.ngspace.hudder.utils;
 
-import dev.ngspace.hudder.compilers.utils.CompileException;
+import dev.ngspace.hudder.exceptions.CompileException;
+import dev.ngspace.hudder.exceptions.ExecutionException;
 
 /**
  * A wrapper to an Object with functions to convert to each type
@@ -11,7 +12,7 @@ public interface ObjectWrapper {
 	 * @return an Object of any kind.
 	 * @throws CompileException - failed to get value of object
 	 */
-	public Object get() throws CompileException;
+	public Object get() throws ExecutionException;
 	
 	
 	
@@ -20,7 +21,7 @@ public interface ObjectWrapper {
 	 * @return The object as a String.
 	 * @throws CompileException - if failed to get value or convert it to string.
 	 */
-	public String asString() throws CompileException;
+	public String asString() throws ExecutionException;
 	
 	
 	/**
@@ -28,7 +29,7 @@ public interface ObjectWrapper {
 	 * @return The Object as a Double.
 	 * @throws CompileException - if failed to get value or convert it to Double.
 	 */
-	public double asDouble() throws CompileException;
+	public double asDouble() throws ExecutionException;
 	
 	
 	/**
@@ -36,7 +37,7 @@ public interface ObjectWrapper {
 	 * @return The Object as an Object array.
 	 * @throws CompileException - if failed to get value or convert it to an Object array.
 	 */
-	public Object[] asArray() throws CompileException;
+	public Object[] asArray() throws ExecutionException;
 	
 	
 	/**
@@ -44,9 +45,9 @@ public interface ObjectWrapper {
 	 * @return The Object as a Boolean.
 	 * @throws CompileException - if failed to get value or convert it to Boolean.
 	 */
-	public boolean asBoolean() throws CompileException;
+	public boolean asBoolean() throws ExecutionException;
 	
-	public <T> T asType(Class<T> clazz) throws CompileException;
+	public <T> T asType(Class<T> clazz) throws ExecutionException;
 	
 	
 	
@@ -57,7 +58,7 @@ public interface ObjectWrapper {
 	 * @return The Object as a Float.
 	 * @throws CompileException - if failed to get value or convert it to Float.
 	 */
-	public default float asFloat() throws CompileException {return (float) asDouble();}
+	public default float asFloat() throws ExecutionException {return (float) asDouble();}
 	
 	
 	/**
@@ -65,7 +66,7 @@ public interface ObjectWrapper {
 	 * @return The Object as a Integer.
 	 * @throws CompileException - if failed to get value or convert it to Integer.
 	 */
-	public default int asInt() throws CompileException {return (int) asDouble();}
+	public default int asInt() throws ExecutionException {return (int) asDouble();}
 	
 	
 	/**
@@ -73,7 +74,7 @@ public interface ObjectWrapper {
 	 * @return The Object as a Long.
 	 * @throws CompileException - if failed to get value or convert it to Long.
 	 */
-	public default long asLong() throws CompileException {return (long) asDouble();}
+	public default long asLong() throws ExecutionException {return (long) asDouble();}
 	
 	
 
@@ -84,7 +85,7 @@ public interface ObjectWrapper {
 	 * @return The Object as a Boolean.
 	 * @throws CompileException - if failed to get value or convert it to Boolean.
 	 */
-	public default float[] asFloatArray() throws CompileException {
+	public default float[] asFloatArray() throws ExecutionException {
 		Object[] objarr = asArray();
 		float[] floatarr = new float[objarr.length];
 		for (int i = 0;i<objarr.length;i++)

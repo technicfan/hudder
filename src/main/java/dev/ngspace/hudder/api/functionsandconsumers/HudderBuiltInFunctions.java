@@ -8,6 +8,8 @@ import dev.ngspace.hudder.api.variableregistry.DataVariableRegistry;
 import dev.ngspace.hudder.compilers.abstractions.AHudCompiler;
 import dev.ngspace.hudder.compilers.utils.Compilers;
 import dev.ngspace.hudder.compilers.utils.HudInformation;
+import dev.ngspace.hudder.exceptions.CompileException;
+import dev.ngspace.hudder.exceptions.ExecutionException;
 import dev.ngspace.hudder.main.HudCompilationManager;
 import dev.ngspace.hudder.utils.HudFileUtils;
 import net.minecraft.client.Minecraft;
@@ -32,18 +34,22 @@ public class HudderBuiltInFunctions {private HudderBuiltInFunctions() {}
 		//Compile
 		
 		binder.registerFunction((m,c,s)-> {
-			var e = m.toUIElementArray();
-			
-			AHudCompiler<?> ecompiler = Compilers.getCompilerFromName(s[1].asString());
-			for (var i : HudCompilationManager.precomplistners) i.accept(ecompiler);
-			
-			HudInformation result = ecompiler.processAndCompile(Hudder.config,s[0].asString(),s[0].asString());
+			try {
+				var e = m.toUIElementArray();
+				
+				AHudCompiler<?> ecompiler = Compilers.getCompilerFromName(s[1].asString());
+				for (var i : HudCompilationManager.precomplistners) i.accept(ecompiler);
+				
+				HudInformation result = ecompiler.processAndCompile(Hudder.config,s[0].asString(),s[0].asString());
 
-			for (var v : result.elements()) m.addUIElement(v);
-			for (var v : e) m.addUIElement(v);
-			
-			for (var i : HudCompilationManager.postcomplistners) i.accept(ecompiler);
-			return result;
+				for (var v : result.elements()) m.addUIElement(v);
+				for (var v : e) m.addUIElement(v);
+				
+				for (var i : HudCompilationManager.postcomplistners) i.accept(ecompiler);
+				return result;
+			} catch (CompileException e1) {
+				throw new ExecutionException(e1);
+			}
 		}, "compile", "run", "execute");
 		
 		

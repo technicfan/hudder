@@ -8,9 +8,10 @@ import java.util.Map;
 import dev.ngspace.hudder.Hudder;
 import dev.ngspace.hudder.api.functionsandconsumers.ArrayElementManager;
 import dev.ngspace.hudder.api.variableregistry.DataVariableRegistry;
-import dev.ngspace.hudder.compilers.utils.CompileException;
 import dev.ngspace.hudder.compilers.utils.HudInformation;
 import dev.ngspace.hudder.config.HudderConfig;
+import dev.ngspace.hudder.exceptions.CompileException;
+import dev.ngspace.hudder.exceptions.ExecutionException;
 import dev.ngspace.hudder.main.HudCompilationManager;
 import dev.ngspace.hudder.uielements.AUIElement;
 import dev.ngspace.hudder.utils.HudFileUtils;
@@ -32,26 +33,44 @@ public abstract class AScriptingLanguageCompiler extends AVarTextCompiler {
 	}
 	
 	protected abstract IScriptingLanguageEngine createLangEngine() throws CompileException;
-
-	@Override public HudInformation compile(HudderConfig info, String text, String filename) throws CompileException {
-		if (mc.player==null) return HudInformation.of("");
-		RuntimeCache rtcache = cache.get(text);
+	
+	@Override
+	public void compileFile(String text, String filepath) throws CompileException {
+		if (cache.containsKey(text)) {
+			var cachehit = cache.get(text);
+			if (cachehit.exception!=null) throw cachehit.engine.processCompileException(cachehit.exception);
+			return;
+		}
 		IScriptingLanguageEngine wrapper = null;
 		try {
+			RuntimeCache rtcache = cache.get(text);
 			if (rtcache!=null&&rtcache.exception!=null) throw rtcache.exception;
-			wrapper = rtcache==null?null:rtcache.engine;
-			if (wrapper==null) {
-				wrapper = createLangEngine();
-				
-				Exception exception = null;
-				try {
-					wrapper.evaluateCode(text, filename);
-				} catch (Exception e) {
-					exception = e;
-					wrapper.close();
-				}
-				cache.put(text, new RuntimeCache(wrapper,exception));
+			wrapper = createLangEngine();
+			
+			Exception exception = null;
+			try {
+				wrapper.evaluateCode(text, filepath);
+			} catch (Exception e) {
+				exception = e;
+				wrapper.close();
 			}
+			cache.put(text, new RuntimeCache(wrapper,exception));
+		} catch (Exception e) {
+			if (Hudder.IS_DEBUG) e.printStackTrace();
+			if (wrapper!=null) {
+				throw wrapper.processCompileException(e);
+			} 
+			if (e instanceof RuntimeException ex) throw ex;
+			throw new CompileException(e.getMessage(),-1,-1,e);
+		}
+		
+	}
+
+	@Override public HudInformation execute(HudderConfig info, String text, String filename) throws ExecutionException {
+		if (mc.player==null) return HudInformation.of("");
+		IScriptingLanguageEngine wrapper = null;
+		try {
+			wrapper = cache.get(text).engine;
 			String TL = String.valueOf(wrapper.callFunctionSafe("topleft", ""));
 			String BL = String.valueOf(wrapper.callFunctionSafe("bottomleft", ""));
 			String TR = String.valueOf(wrapper.callFunctionSafe("topright", ""));
@@ -68,19 +87,17 @@ public abstract class AScriptingLanguageCompiler extends AVarTextCompiler {
 			
 			return new HudInformation(TL, TLscale, BL, BLscale, TR, TRscale, BR, BRscale,
 					elms.toArray(new AUIElement[elms.size()]));
-		} catch (CompileException e) {
-			throw e;
 		} catch (Exception e) {
 			if (Hudder.IS_DEBUG) e.printStackTrace();
 			if (wrapper!=null) {
 				throw wrapper.processException(e);
 			} 
 			if (e instanceof RuntimeException ex) throw ex;
-			throw new CompileException(e.getMessage(),-1,-1,e);
+			throw new ExecutionException(e.getMessage(),-1,-1,e);
 		}
 	}
 
-	@Override public Object getVariable(String key) throws CompileException {
+	@Override public Object getVariable(String key) {
 		Object obj = DataVariableRegistry.getAny(key);
 		if (obj!=null) return obj;
 		return get(key);

@@ -2,7 +2,7 @@ package dev.ngspace.hudder.v2runtime.values;
 
 import dev.ngspace.hudder.Hudder;
 import dev.ngspace.hudder.compilers.abstractions.AV2Compiler;
-import dev.ngspace.hudder.compilers.utils.CompileException;
+import dev.ngspace.hudder.exceptions.ExecutionException;
 import dev.ngspace.hudder.v2runtime.V2Runtime;
 import dev.ngspace.hudder.v2runtime.functions.IV2Function;
 import net.minecraft.ChatFormatting;
@@ -15,11 +15,11 @@ public class V2FunctionVar extends AV2Value {
 	private String funcname;
 
 	public V2FunctionVar(V2Runtime runtime, AV2Compiler compiler, String name, String[] nonprocessedargs,
-			int line, int charpos, String debugvalue) throws CompileException {
+			int line, int charpos, String debugvalue) throws ExecutionException {
 		super(line, charpos, debugvalue, compiler);
 		this.runtime = runtime;
 		this.func = compiler.functionHandler.getFunction(name);
-		if (func==null) throw new CompileException("Unknown function name: \""+name+'"', line, charpos);
+		if (func==null) throw new ExecutionException("Unknown function name: \""+name+'"', line, charpos);
 		this.funcname = name;
 		this.args = new AV2Value[nonprocessedargs.length];
 		
@@ -32,14 +32,14 @@ public class V2FunctionVar extends AV2Value {
 		}
 	}
 
-	@Override public Object get() throws CompileException {
+	@Override public Object get() throws ExecutionException {
 		return func.execute(runtime, funcname, args, line, charpos);
 	}
 	
-	@Override public void setValue(AV2Compiler compiler, Object value) throws CompileException {
-		throw new CompileException("Can't change the value of a function", line, charpos);
+	@Override public void setValue(AV2Compiler compiler, Object value) throws ExecutionException {
+		throw new ExecutionException("Can't change the value of a function", line, charpos);
 	}
 	
-	@Override public boolean isConstant() throws CompileException {return false;}
+	@Override public boolean isConstant() throws ExecutionException {return false;}
 	
 }

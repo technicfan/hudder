@@ -6,7 +6,7 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 
 import dev.ngspace.hudder.Hudder;
-import dev.ngspace.hudder.compilers.utils.CompileException;
+import dev.ngspace.hudder.exceptions.ExecutionException;
 import dev.ngspace.hudder.v2runtime.V2Runtime;
 import dev.ngspace.hudder.v2runtime.values.AV2Value;
 import net.minecraft.client.Minecraft;
@@ -89,7 +89,7 @@ public class V2FunctionHandler {
 			try {
 				if (args.length==1) return new RangedIterator(0, args[0].asInt());
 				return new RangedIterator(args[0].asInt(), args[1].asInt());
-			} catch (CompileException e) {
+			} catch (ExecutionException e) {
 				e.printStackTrace();
 				throw new IllegalArgumentException(e);
 			}
@@ -102,9 +102,9 @@ public class V2FunctionHandler {
 		IV2Function expandedFunction = new IV2Function() {
 			@Override
 			public Object execute(V2Runtime runtime, String name, AV2Value[] args, int line, int charpos)
-					throws CompileException {
-				if (args.length<minlength) throw new CompileException("Too little parameters for "+name+" function!",line,charpos);
-				if (args.length>maxlength) throw new CompileException("Too many parameters for "+name+" function!",line,charpos);
+					throws ExecutionException {
+				if (args.length<minlength) throw new ExecutionException("Too little parameters for "+name+" function!",line,charpos);
+				if (args.length>maxlength) throw new ExecutionException("Too many parameters for "+name+" function!",line,charpos);
 				return func.execute(runtime, name, args, line, charpos);
 			}
 			@Override public String getDeprecationWarning(String funcname) {return message;}
@@ -125,8 +125,8 @@ public class V2FunctionHandler {
 	
 	public void bindFunction(IV2Function function, int minlength, int maxlength, String... names) {
 		IV2Function expandedFunction = (runtime, name, args, line, charpos) -> {
-			if (args.length<minlength) throw new CompileException("Too little parameters for "+name+" function!",line,charpos);
-			if (args.length>maxlength) throw new CompileException("Too many parameters for "+name+" function!",line,charpos);
+			if (args.length<minlength) throw new ExecutionException("Too little parameters for "+name+" function!",line,charpos);
+			if (args.length>maxlength) throw new ExecutionException("Too many parameters for "+name+" function!",line,charpos);
 			return function.execute(runtime, name, args, line, charpos);
 		};
 		bindFunction(expandedFunction,names);

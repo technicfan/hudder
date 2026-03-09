@@ -1,6 +1,5 @@
 package dev.ngspace.hudder.uielements;
 
-import dev.ngspace.hudder.compilers.utils.CompileException;
 import dev.ngspace.hudder.main.HudderRenderer;
 import dev.ngspace.hudder.utils.HudFileUtils;
 import net.minecraft.client.DeltaTracker;
@@ -16,14 +15,14 @@ public class TextureElement extends AUIElement {
 	public final int height;
 	public final Identifier id;
 	
-	public TextureElement(String filename, int x, int y, int width, int height) throws CompileException {
+	public TextureElement(String filename, int x, int y, int width, int height) {
 		this.x=x;
 		this.y=y;
 		this.width=width;
 		this.height=height;
 		this.id=HudFileUtils.getTexture(filename);
 		if (!HudFileUtils.imageLoaded(id)) 
-			throw new CompileException("Image not loaded (Or file is not a valid image): " + filename);
+			throw new IllegalArgumentException("Image not loaded (Or file is not a valid image): " + filename);
 	}
 	
 	@Override public void renderElement(GuiGraphics context, HudderRenderer renderer, DeltaTracker delta) {

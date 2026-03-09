@@ -6,7 +6,8 @@ import dev.ngspace.hudder.Hudder;
 import dev.ngspace.hudder.compilers.abstractions.AV2Compiler;
 import dev.ngspace.hudder.compilers.utils.TextPos;
 import dev.ngspace.hudder.config.HudderConfig;
-import dev.ngspace.hudder.compilers.utils.CompileException;
+import dev.ngspace.hudder.exceptions.CompileException;
+import dev.ngspace.hudder.exceptions.ExecutionException;
 import dev.ngspace.hudder.compilers.utils.CompileState;
 import dev.ngspace.hudder.v2runtime.V2Runtime;
 import dev.ngspace.hudder.v2runtime.methods.V2IMethod;
@@ -24,7 +25,8 @@ public class MethodV2RuntimeElement extends AV2RuntimeElement {
 	private TextPos pos;
 	private V2Runtime runtime;
 
-	public MethodV2RuntimeElement(String[] args, AV2Compiler compiler, HudderConfig info, V2Runtime runtime, int line, int charpos) throws CompileException {
+	public MethodV2RuntimeElement(String[] args, AV2Compiler compiler, HudderConfig info, V2Runtime runtime,
+			int line, int charpos) throws CompileException, ExecutionException {
 		this.compiler = compiler;
 		this.info = info;
 		this.runtime = runtime;
@@ -40,7 +42,7 @@ public class MethodV2RuntimeElement extends AV2RuntimeElement {
 		}
 		this.pos = new TextPos(line, charpos);
 	}
-	@Override public boolean execute(CompileState meta, StringBuilder builder) throws CompileException {
+	@Override public boolean execute(CompileState meta, StringBuilder builder) throws ExecutionException {
 		method.invoke(info, meta, compiler, runtime, type, pos, values);
 		return true;
 	}

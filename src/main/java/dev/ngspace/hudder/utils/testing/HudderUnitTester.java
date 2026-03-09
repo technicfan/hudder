@@ -13,17 +13,17 @@ import java.util.Map;
 import org.apache.commons.io.IOUtils;
 
 import dev.ngspace.hudder.Hudder;
-import dev.ngspace.hudder.compilers.abstractions.ATextCompiler;
+import dev.ngspace.hudder.compilers.abstractions.AV2Compiler;
 import dev.ngspace.hudder.config.HudderConfig;
 import dev.ngspace.hudder.utils.testing.HudderUnitTest.HudderUnitTestResult;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 
 public class HudderUnitTester {
-	public ATextCompiler compiler;
+	public AV2Compiler compiler;
 	public Map<String, HudderUnitTest> UnitTests = new HashMap<String, HudderUnitTest>();
 	
-	public HudderUnitTester(ATextCompiler compiler) {this.compiler=compiler;}
+	public HudderUnitTester(AV2Compiler compiler) {this.compiler=compiler;}
 	
 	public void load(InputStream inputStream) throws IOException {load(IOUtils.toString(inputStream, UTF_8));}
 	

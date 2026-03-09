@@ -3,15 +3,17 @@ package dev.ngspace.hudder.compilers.abstractions;
 import java.util.HashMap;
 import java.util.Map;
 
-import dev.ngspace.hudder.compilers.utils.TextPos;
+import dev.ngspace.hudder.Hudder;
 import dev.ngspace.hudder.api.functionsandconsumers.FunctionAndConsumerAPI;
 import dev.ngspace.hudder.api.functionsandconsumers.FunctionAndConsumerAPI.BindableConsumer;
 import dev.ngspace.hudder.api.functionsandconsumers.FunctionAndConsumerAPI.BindableFunction;
 import dev.ngspace.hudder.api.functionsandconsumers.FunctionAndConsumerAPI.Binder;
-import dev.ngspace.hudder.compilers.utils.CompileException;
 import dev.ngspace.hudder.compilers.utils.CompileState;
 import dev.ngspace.hudder.compilers.utils.HudInformation;
+import dev.ngspace.hudder.compilers.utils.TextPos;
 import dev.ngspace.hudder.config.HudderConfig;
+import dev.ngspace.hudder.exceptions.CompileException;
+import dev.ngspace.hudder.exceptions.ExecutionException;
 import dev.ngspace.hudder.main.HudCompilationManager;
 import dev.ngspace.hudder.v2runtime.V2Runtime;
 import dev.ngspace.hudder.v2runtime.functions.IV2Function;
@@ -70,7 +72,7 @@ public abstract class AV2Compiler extends AVarTextCompiler implements Binder {
 	 * @returns The tokenized AV2Value
 	 * @throws CompileException
 	 */
-	public AV2Value getV2Value(V2Runtime runtime, String string, int line, int col) throws CompileException {
+	public AV2Value getV2Value(V2Runtime runtime, String string, int line, int col) throws ExecutionException {
 		return getVariableParser().parse(runtime, string, this, line, col);
 	}
 
@@ -89,19 +91,22 @@ public abstract class AV2Compiler extends AVarTextCompiler implements Binder {
 	}
 	
 	
+	@Override
+	public void compileFile(String text, String filepath) throws CompileException {
+		if (!runtimes.containsKey(text))
+			runtimes.put(text, buildRuntimeSafe(Hudder.config, text, new TextPos(-1, -1), filepath, null));
+	}
+	
 
-	@Override public final HudInformation compile(HudderConfig info, String text, String filename)
-			throws CompileException {
-		V2Runtime runtime = runtimes.get(text);
-		if (runtime==null)
-			runtimes.put(text, (runtime=buildRuntime(info, text, new TextPos(-1, -1), filename, null)));
-		return runtime.execute().toResult();
+	@Override public final HudInformation execute(HudderConfig info, String text, String filename)
+			throws ExecutionException {
+		return runtimes.get(text).execute().toResult();
 	}
 	
 	
 	
 	public abstract V2Runtime buildRuntime(HudderConfig info, String text, TextPos charPosition, String filename,
-			V2Runtime scope) throws CompileException;
+			V2Runtime scope) throws CompileException, ExecutionException;
 	
 	
 	
@@ -116,13 +121,13 @@ public abstract class AV2Compiler extends AVarTextCompiler implements Binder {
 
 	public void defineFunctionOrMethod(String commands, String[] args, String name, TextPos pos, String filename)
 			throws CompileException {
-		V2Runtime runtime = buildRuntime(getConfig(), commands, pos, filename, null);
+		V2Runtime runtime = buildRuntimeSafe(getConfig(), commands, pos, filename, null);
 		
 		boolean isMethod = !hasReturnValue(runtime);
 		
 		if (isMethod) {
 			MethodHandler.methods.put(name, (info,state,comp,type,line,charpos,vals) -> {
-				if (vals.length<args.length) throw new CompileException("Not enough arguments", pos.line(), pos.column());
+				if (vals.length<args.length) throw new ExecutionException("Not enough arguments", pos.line(), pos.column());
 				for (int i = 0;i<vals.length;i++) {
 					Object v = vals[i].get();
 					runtime.putScoped("arg"+(i+1), v);
@@ -130,8 +135,8 @@ public abstract class AV2Compiler extends AVarTextCompiler implements Binder {
 				}
 				try {
 					state.combineWithResult(runtime.execute().toResult(), false);
-				} catch (CompileException e) {
-					throw new CompileException("Method "+type+" threw an error: \n"+e.getFailureMessage(),charpos);
+				} catch (ExecutionException e) {
+					throw new ExecutionException("Method "+type+" threw an error: \n"+e.getFailureMessage(),charpos);
 				}
 			});
 		} else {//Is function
@@ -143,7 +148,7 @@ public abstract class AV2Compiler extends AVarTextCompiler implements Binder {
 			if (temp) throw new CompileException("Main path in function \""+name
 					+"\" does not return a value!",pos.line(),pos.column());
 			functionHandler.bindFunction((IV2Function) (funcruntime,funcname,vals,line,charpos) -> {
-				if (vals.length<args.length) throw new CompileException("Not enough arguments", pos.line(), pos.column());
+				if (vals.length<args.length) throw new ExecutionException("Not enough arguments", pos.line(), pos.column());
 				for (int i = 0;i<vals.length;i++) {
 					Object v = vals[i].get();
 					runtime.putScoped("arg"+(i+1), v);
@@ -153,13 +158,23 @@ public abstract class AV2Compiler extends AVarTextCompiler implements Binder {
 					CompileState exec = runtime.execute();
 					runtime.compileState.combineWithResult(exec.toResult(), false);
 					return exec.returnValue;
-				} catch (CompileException e) {
-					throw new CompileException("Function "+name+" threw an error: \n"+e.getFailureMessage(),line,charpos);
+				} catch (ExecutionException e) {
+					throw new ExecutionException("Function "+name+" threw an error: \n"+e.getFailureMessage(),line,charpos);
 				}
 			}, name);
 			
 		}
 	}
+
+	private V2Runtime buildRuntimeSafe(HudderConfig config, String commands, TextPos pos, String filename,
+			V2Runtime scope) throws CompileException {
+		try {
+			return buildRuntime(config, commands, pos, filename, scope);
+		} catch (ExecutionException e) {
+			throw new CompileException(e);
+		}
+	}
+
 
 	public boolean hasReturnValue(V2Runtime runtime) {
 		for (AV2RuntimeElement element : runtime.getElements()) {
@@ -172,5 +187,16 @@ public abstract class AV2Compiler extends AVarTextCompiler implements Binder {
 	@Override
 	public boolean setupHudSettings(NGSMCConfigCategory hudsettings) {
 		return false;
+	}
+
+
+	public HudInformation compileAndExecute(HudderConfig info, String text, String filename) throws ExecutionException {
+		try {
+			if (!runtimes.containsKey(text))
+				compileFile(text, filename);
+			return execute(info, text, filename);
+		} catch (CompileException e) {
+			throw new ExecutionException(e);
+		}
 	}
 }

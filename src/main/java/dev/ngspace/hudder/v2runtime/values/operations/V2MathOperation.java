@@ -1,7 +1,7 @@
 package dev.ngspace.hudder.v2runtime.values.operations;
 
 import dev.ngspace.hudder.compilers.abstractions.AV2Compiler;
-import dev.ngspace.hudder.compilers.utils.CompileException;
+import dev.ngspace.hudder.exceptions.ExecutionException;
 import dev.ngspace.hudder.v2runtime.values.AV2Value;
 
 public class V2MathOperation extends AV2Value {
@@ -10,14 +10,14 @@ public class V2MathOperation extends AV2Value {
 	public Object constant = null;
 	
 	public V2MathOperation(AV2Value[] values, char[] operations, int line, int charpos, String debugvalue,
-			AV2Compiler compiler) throws CompileException {
+			AV2Compiler compiler) throws ExecutionException {
 		super(line, charpos, debugvalue, compiler);
 		this.values = values;
 		this.operations = operations;
 		if (isConstant()) constant = get();
 	}
 	
-	@Override public Object get() throws CompileException {
+	@Override public Object get() throws ExecutionException {
 		if (constant!=null) return constant;
 
 		Object[] processedValues = new Object[values.length];
@@ -31,7 +31,7 @@ public class V2MathOperation extends AV2Value {
 			for (int i = 0;i<operations.length;i++) {
 				if (operations[i]=='+') {
 					result += toString(processedValues[i+1]);
-				} else throw new CompileException("Unknown operator for str concatination: "+operations[i],line,charpos);
+				} else throw new ExecutionException("Unknown operator for str concatination: "+operations[i],line,charpos);
 			}
 			return result;
 		}
@@ -79,11 +79,11 @@ public class V2MathOperation extends AV2Value {
 		return ((Number) object).doubleValue();
 	}
 
-	@Override public void setValue(AV2Compiler compiler, Object value) throws CompileException {
-		throw new CompileException("Can't change the value of a math operation", line, charpos);
+	@Override public void setValue(AV2Compiler compiler, Object value) throws ExecutionException {
+		throw new ExecutionException("Can't change the value of a math operation", line, charpos);
 	}
 	
-	@Override public boolean isConstant() throws CompileException {
+	@Override public boolean isConstant() throws ExecutionException {
         for (AV2Value v : values) {
             if (!v.isConstant()) return false;
         }

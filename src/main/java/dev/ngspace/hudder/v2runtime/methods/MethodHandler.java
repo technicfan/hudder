@@ -11,7 +11,8 @@ import java.util.Map;
 
 import com.mojang.datafixers.types.templates.List;
 
-import dev.ngspace.hudder.compilers.utils.CompileException;
+import dev.ngspace.hudder.exceptions.CompileException;
+import dev.ngspace.hudder.exceptions.ExecutionException;
 
 public class MethodHandler {
 	
@@ -29,7 +30,7 @@ public class MethodHandler {
 		bindConsumer(new LoadMethod(), "load", "execute", "compile", "run", "add");
 		
 		//Logging and errors
-		bindConsumer((c,m,a,r,t,ch,s)->{throw new CompileException(s[0].asString(),ch);},1, TextArg, "throw");
+		bindConsumer((c,m,a,r,t,ch,s)->{throw new ExecutionException(s[0].asString(),ch);},1, TextArg, "throw");
 	}
 	
 	
@@ -44,7 +45,7 @@ public class MethodHandler {
 				String err='"'+name+"\" only accepts ;"+name+"";
 				for(String str:args)err+=", "+ str;
 				err+=';';
-				throw new CompileException(err,charpos.line(),charpos.column());
+				throw new ExecutionException(err,charpos.line(),charpos.column());
 			}
 			method.invoke(config, meta, compiler, runtime, name, charpos, vals);
 		};
@@ -58,9 +59,9 @@ public class MethodHandler {
 	 * @return The method
 	 * @throws CompileException - if there is no method with that name.
 	 */
-	public V2IMethod getMethodFromName(String name) throws CompileException {
+	public V2IMethod getMethodFromName(String name) throws IllegalArgumentException {
 		V2IMethod method = methods.get(name.toLowerCase().trim());
-		if (method==null) throw new CompileException("Unknown method " + name);
+		if (method==null) throw new IllegalArgumentException("Unknown method " + name);
 		return method;
 	}
 	
@@ -85,7 +86,7 @@ public class MethodHandler {
 		errb+=';';
 		String err = errb;
 		V2IMethod newmethod = (info,state,comp,runtime,type,pos,vals) -> {
-			if (vals.length!=argtypes.length) throw new CompileException(err, defline, defcharpos);
+			if (vals.length!=argtypes.length) throw new ExecutionException(err, defline, defcharpos);
 			for (int i = 0;i<vals.length;i++) {
 				if      (parameters[i]==1) comp.put("arg"+(i+1), vals[i].asString());
 				else if (parameters[i]==2) comp.put("arg"+(i+1), vals[i].asDouble());
@@ -94,9 +95,9 @@ public class MethodHandler {
 				else if (parameters[i]==0) comp.put("arg"+(i+1), vals[i].get());
 			}
 			try {
-				state.combineWithResult(comp.compile(info, method, filename), false);
-			} catch (CompileException e) {
-				throw new CompileException(e.getFailureMessage() +"\nMethod "+type+" threw an error ", pos);
+				state.combineWithResult(comp.execute(info, method, filename), false);
+			} catch (ExecutionException e) {
+				throw new ExecutionException(e.getFailureMessage() +"\nMethod "+type+" threw an error ", pos);
 			}
 		};
 		methods.put(name,newmethod);

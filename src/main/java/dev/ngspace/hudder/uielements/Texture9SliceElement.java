@@ -1,6 +1,5 @@
 package dev.ngspace.hudder.uielements;
 
-import dev.ngspace.hudder.compilers.utils.CompileException;
 import dev.ngspace.hudder.main.HudderRenderer;
 import dev.ngspace.hudder.utils.HudFileUtils;
 import net.minecraft.client.DeltaTracker;
@@ -16,8 +15,7 @@ public class Texture9SliceElement extends AUIElement {
 	public final Identifier id;
 	private float[] scales;
 	
-	public Texture9SliceElement(String filename, int x, int y, int width, int height, float[] slices)
-			throws CompileException {
+	public Texture9SliceElement(String filename, int x, int y, int width, int height, float[] slices) {
 		this.x=x;
 		this.y=y;
 		this.width=width;
@@ -25,9 +23,9 @@ public class Texture9SliceElement extends AUIElement {
 		this.id=HudFileUtils.getTexture(filename);
 		this.scales = slices;
 		if (slices.length!=4)
-			throw new CompileException("Slices array must have 4 values: [left, right, top, bottom]!");
+			throw new IllegalArgumentException("Slices array must have 4 values: [left, right, top, bottom]!");
 		if (!HudFileUtils.imageLoaded(id)) 
-			throw new CompileException("Image not loaded (Or file is not a valid image): " + filename);
+			throw new IllegalArgumentException("Image not loaded (Or file is not a valid image): " + filename);
 	}
 
 	@Override public void renderElement(GuiGraphics context, HudderRenderer renderer, DeltaTracker delta) {

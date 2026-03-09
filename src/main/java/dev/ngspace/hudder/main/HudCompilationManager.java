@@ -6,8 +6,9 @@ import java.util.function.Consumer;
 
 import dev.ngspace.hudder.Hudder;
 import dev.ngspace.hudder.compilers.abstractions.AHudCompiler;
-import dev.ngspace.hudder.compilers.utils.CompileException;
 import dev.ngspace.hudder.compilers.utils.HudInformation;
+import dev.ngspace.hudder.exceptions.CompileException;
+import dev.ngspace.hudder.exceptions.ExecutionException;
 import dev.ngspace.hudder.variables.advanced.Misc;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents.EndTick;
 import net.minecraft.client.DeltaTracker;
@@ -35,6 +36,8 @@ public class HudCompilationManager implements EndTick {
     			for (Consumer<AHudCompiler<?>> con : postcomplistners) con.accept(Hudder.config.getCompiler());
     		}
 		} catch (CompileException e) {
+			LastFailMessage = "Compiler error: " + e.getFailureMessage();
+		} catch (ExecutionException e) {
 			LastFailMessage = e.getFailureMessage();
 		} catch (Exception e) {
 			LastFailMessage = "E: " + e.getLocalizedMessage();

@@ -3,7 +3,8 @@ package dev.ngspace.hudder.compilers.abstractions;
 import java.io.Closeable;
 import java.io.IOException;
 
-import dev.ngspace.hudder.compilers.utils.CompileException;
+import dev.ngspace.hudder.exceptions.CompileException;
+import dev.ngspace.hudder.exceptions.ExecutionException;
 import dev.ngspace.hudder.utils.ObjectWrapper;
 
 public interface IScriptingLanguageEngine extends Closeable {
@@ -45,10 +46,12 @@ public interface IScriptingLanguageEngine extends Closeable {
 	
 	
 	
-	public CompileException processException(Exception e);
+	public ExecutionException processException(Exception e);
+	public CompileException processCompileException(Exception e);
 	
 	
 	
-	public static interface ScriptFunction {public Object exec(ObjectWrapper... args) throws CompileException;}
-	public static interface ScriptConsumer {public void   exec(ObjectWrapper... args) throws CompileException;}
+	public static interface ScriptFunction {public Object exec(ObjectWrapper... args) throws ExecutionException;}
+	public static interface ScriptConsumer {public void   exec(ObjectWrapper... args) throws ExecutionException;}
+	
 }

@@ -1,7 +1,7 @@
 package dev.ngspace.hudder.v2runtime.values.operations;
 
 import dev.ngspace.hudder.compilers.abstractions.AV2Compiler;
-import dev.ngspace.hudder.compilers.utils.CompileException;
+import dev.ngspace.hudder.exceptions.ExecutionException;
 import dev.ngspace.hudder.v2runtime.values.AV2Value;
 
 public class V2PreIncDecOperator extends AV2Value {
@@ -17,13 +17,13 @@ public class V2PreIncDecOperator extends AV2Value {
 		this.add = add;
 	}
 
-	@Override public Object get() throws CompileException {
+	@Override public Object get() throws ExecutionException {
 		double val = add ? key.asDouble() + 1 : key.asDouble() -1;
 		key.setValue(compilerv2, val);
 		return val;
 	}
-	@Override public boolean isConstant() throws CompileException {return key.isConstant();}
-	@Override public void setValue(AV2Compiler compiler, Object value) throws CompileException {
-		throw new CompileException("Can't change the value of a pre-inc-dec operator", line, charpos);	
+	@Override public boolean isConstant() throws ExecutionException {return key.isConstant();}
+	@Override public void setValue(AV2Compiler compiler, Object value) throws ExecutionException {
+		throw new ExecutionException("Can't change the value of a pre-inc-dec operator", line, charpos);	
 	}
 }

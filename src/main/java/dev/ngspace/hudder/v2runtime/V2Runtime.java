@@ -4,8 +4,8 @@ import java.util.Arrays;
 import java.util.HashMap;
 
 import dev.ngspace.hudder.compilers.abstractions.AV2Compiler;
-import dev.ngspace.hudder.compilers.utils.CompileException;
 import dev.ngspace.hudder.compilers.utils.CompileState;
+import dev.ngspace.hudder.exceptions.ExecutionException;
 import dev.ngspace.hudder.v2runtime.runtime_elements.AV2RuntimeElement;
 
 public class V2Runtime {
@@ -24,7 +24,7 @@ public class V2Runtime {
 	protected AV2RuntimeElement[] elements = new AV2RuntimeElement[0];
 	public CompileState compileState;
 	
-	public CompileState execute() throws CompileException {
+	public CompileState execute() throws ExecutionException {
 		compileState = new CompileState(CompileState.TOPLEFT);
 		StringBuilder builder = new StringBuilder();
 		for (int i = 0;i<elements.length;i++) {

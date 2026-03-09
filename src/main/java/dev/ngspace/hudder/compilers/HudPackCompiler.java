@@ -7,9 +7,9 @@ import dev.ngspace.hudder.Hudder;
 import dev.ngspace.hudder.api.functionsandconsumers.ArrayElementManager;
 import dev.ngspace.hudder.api.variableregistry.DataVariableRegistry;
 import dev.ngspace.hudder.compilers.abstractions.AHudCompiler;
-import dev.ngspace.hudder.compilers.utils.CompileException;
 import dev.ngspace.hudder.compilers.utils.HudInformation;
 import dev.ngspace.hudder.config.HudderConfig;
+import dev.ngspace.hudder.exceptions.ExecutionException;
 import dev.ngspace.hudder.hudpacks.HudPack;
 import dev.ngspace.hudder.hudpacks.HudPackHudState;
 import dev.ngspace.hudder.utils.HudFileUtils;
@@ -38,7 +38,7 @@ public class HudPackCompiler extends AHudCompiler<HudPack> {
 	}
 
 	@Override
-	public HudInformation compile(HudderConfig info, HudPack pack, String filename) throws CompileException {
+	public HudInformation execute(HudderConfig info, HudPack pack, String filename) throws ExecutionException {
 		if (pack==null)
 			return HudInformation.of("\u00A74Failed to load HudPack: " + filename);
 		try {
@@ -62,10 +62,10 @@ public class HudPackCompiler extends AHudCompiler<HudPack> {
 		}
 		return true;
 	}
-
-	@Override
-	public Object getVariable(String key) throws CompileException {
-		return "ur mom (ha gottem)";
+	
+	
+	@Override public Object getVariable(String key) throws ExecutionException {
+		return DataVariableRegistry.getAny(key);
 	}
 
 	@Override

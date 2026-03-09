@@ -4,21 +4,19 @@ import java.util.HashMap;
 import java.util.Map;
 
 import dev.ngspace.hudder.Hudder;
-import dev.ngspace.hudder.compilers.utils.CompileException;
 import dev.ngspace.hudder.compilers.utils.HudInformation;
 import dev.ngspace.hudder.config.HudderConfig;
+import dev.ngspace.hudder.exceptions.CompileException;
+import dev.ngspace.hudder.exceptions.ExecutionException;
 import dev.ngspace.ngsmcconfig.api.NGSMCConfigCategory;
 
 public abstract class AHudCompiler<T> {
 
 	public static Map<String, Object> variables = new HashMap<String, Object>();
 	
-	public abstract T processFile(String filepath);
-	public abstract HudInformation compile(HudderConfig info, T processedfile, String filename) throws CompileException;
-	public abstract Object getVariable(String key) throws CompileException;
-	
-	public void put(String key, Object value) {variables.put(key, value);}
-	public Object get(String key) {return variables.get(key);}
+	public abstract T processFile(String filepath) throws CompileException;
+	public abstract HudInformation execute(HudderConfig info, T processedfile, String filename) throws ExecutionException;
+	public abstract Object getVariable(String key) throws ExecutionException;
 	
 	
 	public HudderConfig getConfig() {
@@ -26,7 +24,8 @@ public abstract class AHudCompiler<T> {
 	}
 	public abstract boolean setupHudSettings(NGSMCConfigCategory hudsettings);
 	
-	public HudInformation processAndCompile(HudderConfig config, String filepath, String filename) throws CompileException {
-		return compile(config, processFile(filepath), filename);
+	public HudInformation processAndCompile(HudderConfig config, String filepath, String filename)
+			throws CompileException, ExecutionException {
+		return execute(config, processFile(filepath), filename);
 	}
 }

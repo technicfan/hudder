@@ -2,7 +2,7 @@ package dev.ngspace.hudder.v2runtime.functions;
 
 import java.util.ArrayList;
 
-import dev.ngspace.hudder.compilers.utils.CompileException;
+import dev.ngspace.hudder.exceptions.ExecutionException;
 import dev.ngspace.hudder.v2runtime.V2Runtime;
 import dev.ngspace.hudder.v2runtime.values.AV2Value;
 
@@ -10,7 +10,7 @@ public class ArrayV2Function implements IV2Function {
 	
 	@Override
 	public Object execute(V2Runtime runtime, String functionName, AV2Value[] args, int line, int charpos)
-			throws CompileException {
+			throws ExecutionException {
 		var lst = new ArrayList<Object>();
 		Object o = args[0].get();
 		if (o instanceof String str) {

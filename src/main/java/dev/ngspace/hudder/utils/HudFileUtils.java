@@ -22,7 +22,7 @@ import net.minecraft.resources.Identifier;
 public class HudFileUtils {private HudFileUtils() {}
 
 	private static CachedReader reader = new CachedReader();
-	private static List<ERunnable<IOException>> reloadResourcesListeners = new ArrayList<ERunnable<IOException>>();
+	private static List<ResourceReloadListener> reloadResourcesListeners = new ArrayList<ResourceReloadListener>();
 
 	public static final String FABRIC_CONFIG_FOLDER = FabricLoader.getInstance().getConfigDir().toString();
 	public static final String FOLDER = FABRIC_CONFIG_FOLDER + File.separator + "hudder" + File.separator;
@@ -72,7 +72,7 @@ public class HudFileUtils {private HudFileUtils() {}
 	 * Triggers when clearFileCache() is called (usually when the user modifies a hud)
 	 * @param listener - the Runnable to trigger
 	 */
-	public static void addReloadResourcesListener(ERunnable<IOException> listener) {
+	public static void addReloadResourcesListener(ResourceReloadListener listener) {
 		reloadResourcesListeners.add(listener);
 	}
 	

@@ -1,17 +1,19 @@
 package dev.ngspace.hudder.compilers.abstractions;
 
 import dev.ngspace.hudder.api.variableregistry.DataVariableRegistry;
-import dev.ngspace.hudder.compilers.utils.CompileException;
 
 public abstract class AVarTextCompiler extends ATextCompiler {
 	
 	
-	@Override public Object getVariable(String key) throws CompileException {
-		Object obj = getSystemVariable(key);
+	@Override public Object getVariable(String key) {
+		Object obj = DataVariableRegistry.getAny(key);
 		if (obj==null&&(obj=getDynamicVariable(key))!=null) return obj;
 		if (obj!=null) return obj;
 		return key;
 	}
+	
+	public void put(String key, Object value) {variables.put(key, value);}
+	public Object get(String key) {return variables.get(key);}
 	
 	/**
 	 * If the variable exists within Hudder's system variables (ex. fps, x, y, z)
@@ -19,15 +21,7 @@ public abstract class AVarTextCompiler extends ATextCompiler {
 	 * @return true or false
 	 */
 	public boolean isSystemVariable(String key) {
-		return getSystemVariable(key)!=null||"null".equals(key)||DataVariableRegistry.hasVariable(key);
-	}
-	/**
-	 * Returns the value of the variable
-	 * @param key - the name of the variable
-	 * @return The value of the variable or null if it doesn't exist.
-	 */
-	public Object getSystemVariable(String key) {
-		return DataVariableRegistry.getAny(key);
+		return "null".equals(key)||DataVariableRegistry.hasVariable(key);
 	}
 
 	public Object getDynamicVariable(String key) {

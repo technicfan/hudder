@@ -13,7 +13,6 @@ import com.sun.management.OperatingSystemMXBean;
 
 import dev.ngspace.hudder.api.variableregistry.DataVariableRegistry;
 import dev.ngspace.hudder.api.variableregistry.VariableTypes;
-import dev.ngspace.hudder.utils.LimitedRefreshSpeedData;
 import dev.ngspace.hudder.v2runtime.V2Runtime;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.ChatScreen;

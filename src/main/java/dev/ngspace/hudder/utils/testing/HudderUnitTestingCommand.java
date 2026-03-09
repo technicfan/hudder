@@ -21,6 +21,7 @@ import dev.ngspace.hudder.Hudder;
 import dev.ngspace.hudder.api.functionsandconsumers.FunctionAndConsumerAPI;
 import dev.ngspace.hudder.api.variableregistry.DataVariableRegistry;
 import dev.ngspace.hudder.api.variableregistry.VariableTypes;
+import dev.ngspace.hudder.compilers.abstractions.AVarTextCompiler;
 import dev.ngspace.hudder.utils.HudFileUtils;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
 import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource;
@@ -42,7 +43,7 @@ public class HudderUnitTestingCommand implements ClientCommandRegistrationCallba
 	@Override public void register(CommandDispatcher<FabricClientCommandSource> dispatcher, CommandBuildContext registryAccess) {
 
 		FunctionAndConsumerAPI.getInstance().registerFunction((m,co,a)-> a[0].get(), "FunctionAPITestingFunction");
-		FunctionAndConsumerAPI.getInstance().registerConsumer((m,co,a)-> co.put("methodvalue",a[0].get()), "MethodAPITestingMethod");
+		FunctionAndConsumerAPI.getInstance().registerConsumer((m,co,a)-> ((AVarTextCompiler) co).put("methodvalue",a[0].get()), "MethodAPITestingMethod");
 
 		DataVariableRegistry.registerVariable(k->new JavaTestObject(), "JavaObjectAccess");
 		DataVariableRegistry.registerVariable(k->new JavaTestNoAccess(), "JavaTestNoAccess");

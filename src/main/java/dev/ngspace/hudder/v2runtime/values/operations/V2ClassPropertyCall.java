@@ -12,8 +12,8 @@ import org.mozilla.javascript.ScriptableObject;
 
 import dev.ngspace.hudder.Hudder;
 import dev.ngspace.hudder.compilers.abstractions.AV2Compiler;
-import dev.ngspace.hudder.compilers.utils.CompileException;
 import dev.ngspace.hudder.config.HudderConfig;
+import dev.ngspace.hudder.exceptions.ExecutionException;
 import dev.ngspace.hudder.utils.HudderUtils;
 import dev.ngspace.hudder.utils.NoAccess;
 import dev.ngspace.hudder.utils.ValueGetter;
@@ -30,7 +30,7 @@ public class V2ClassPropertyCall extends AV2Value {
 	private String fieldName = "";
 
 	public V2ClassPropertyCall(int line, int charpos, String value, AV2Compiler c, V2Runtime runtime,
-			AV2Value classobj, String prop) throws CompileException {
+			AV2Value classobj, String prop) throws ExecutionException {
 		super(line, charpos, value, c);
 		this.classobj = classobj;
 		if (!prop.startsWith("(")&&prop.endsWith(")")) {
@@ -53,11 +53,11 @@ public class V2ClassPropertyCall extends AV2Value {
 		}
 		if (!isFunctionCall) fieldName = prop;
 		for (String forbidden : forbiddenValuesAndFunctions) {
-			if (forbidden.equals(funcName)) throw new CompileException("No function named \""+funcName+'"',line,charpos);
-			if (forbidden.equals(fieldName)) throw new CompileException("No property named \""+fieldName+'"',line,charpos);
+			if (forbidden.equals(funcName)) throw new ExecutionException("No function named \""+funcName+'"',line,charpos);
+			if (forbidden.equals(fieldName)) throw new ExecutionException("No property named \""+fieldName+'"',line,charpos);
 		}
 	}
-	@Override public Object get() throws CompileException {
+	@Override public Object get() throws ExecutionException {
 		Object obj = smartGet();
 		if (obj==null) return null;
 		if (!HudderConfig.isAccessible(obj.getClass()))
@@ -72,21 +72,21 @@ public class V2ClassPropertyCall extends AV2Value {
 		return obj;
 	}
 
-	public Object smartGet() throws CompileException {
+	public Object smartGet() throws ExecutionException {
 		
 		Object objValue = classobj.get();
 		if (V2Runtime.NULL.equals(objValue)
 				|| objValue instanceof Class<?>
 				|| objValue instanceof ClassLoader)
-			throw new CompileException("Can't read \"" + funcName+fieldName + "\" because \"" + classobj.value
+			throw new ExecutionException("Can't read \"" + funcName+fieldName + "\" because \"" + classobj.value
 					+ "\" is null", line, charpos);
 		Class<?> objClass = objValue.getClass();
 		
 		if (objClass.isPrimitive())
-			throw new CompileException("Can not read properties of Numbers, Booleans and Chars : "+classobj.value,line,charpos);
+			throw new ExecutionException("Can not read properties of Numbers, Booleans and Chars : "+classobj.value,line,charpos);
 
 		if (!HudderConfig.isAccessible(objClass))
-			throw new CompileException("Access to this type is not allowed",line,charpos);
+			throw new ExecutionException("Access to this type is not allowed",line,charpos);
 		
 		if (isFunctionCall) {
 			Object[] parameters = new Object[functionCallArgs.length];
@@ -119,31 +119,31 @@ public class V2ClassPropertyCall extends AV2Value {
 				if (isCompatible) finalmethod = method;
 			}
 			if (finalmethod==null)
-				throw new CompileException("No function named \""+getCallSign(classes)+"\" in type \"" +objClass.getSimpleName()+'"',line,charpos);
+				throw new ExecutionException("No function named \""+getCallSign(classes)+"\" in type \"" +objClass.getSimpleName()+'"',line,charpos);
 			
 			try {
 				finalmethod.setAccessible(true);
 				return finalmethod.invoke(objValue, finalParameters);
 			} catch (InvocationTargetException e) {
 				if (Hudder.IS_DEBUG) e.getTargetException().printStackTrace();
-				throw new CompileException(e.getTargetException().getMessage(), line, charpos, e.getTargetException());
+				throw new ExecutionException(e.getTargetException().getMessage(), line, charpos, e.getTargetException());
 			} catch (IllegalAccessException e) {
 				if (Hudder.IS_DEBUG) e.printStackTrace();
-				throw new CompileException(e.getMessage(), line, charpos, e);
+				throw new ExecutionException(e.getMessage(), line, charpos, e);
 			}
 		}
 		
 		try {
 			Field f = objClass.getDeclaredField(fieldName);
-			if (!isAccessible(f)) throw new CompileException("No property named \""+fieldName+"\" in type \"" +objClass.getSimpleName()+'"',line,charpos);
+			if (!isAccessible(f)) throw new ExecutionException("No property named \""+fieldName+"\" in type \"" +objClass.getSimpleName()+'"',line,charpos);
 			return f.get(objValue);
 		} catch (NoSuchFieldException e) {
 			if (objValue instanceof ValueGetter getter) return getter.get(fieldName);
 			if (Hudder.IS_DEBUG) e.printStackTrace();
-			throw new CompileException("No property named \""+fieldName+'"',line,charpos);
+			throw new ExecutionException("No property named \""+fieldName+'"',line,charpos);
 		} catch (ReflectiveOperationException e) {
 			if (Hudder.IS_DEBUG) e.printStackTrace();
-			throw new CompileException("Failed Reflective Operation property named \""+fieldName+'"',line,charpos);
+			throw new ExecutionException("Failed Reflective Operation property named \""+fieldName+'"',line,charpos);
 		}
 	}
 	
@@ -167,10 +167,10 @@ public class V2ClassPropertyCall extends AV2Value {
 	
 	
 
-	@Override public void setValue(AV2Compiler compiler, Object value) throws CompileException {
-		throw new CompileException("Can't change the value of a ClassPropertyCall", line, charpos);
+	@Override public void setValue(AV2Compiler compiler, Object value) throws ExecutionException {
+		throw new ExecutionException("Can't change the value of a ClassPropertyCall", line, charpos);
 		
 	}
 	
-	@Override public boolean isConstant() throws CompileException {return false;}
+	@Override public boolean isConstant() throws ExecutionException {return false;}
 }

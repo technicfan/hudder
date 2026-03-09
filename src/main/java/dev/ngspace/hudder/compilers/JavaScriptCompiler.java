@@ -6,8 +6,8 @@ import dev.ngspace.hudder.api.functionsandconsumers.FunctionAndConsumerAPI.Binda
 import dev.ngspace.hudder.api.functionsandconsumers.FunctionAndConsumerAPI.Binder;
 import dev.ngspace.hudder.compilers.abstractions.AScriptingLanguageCompiler;
 import dev.ngspace.hudder.compilers.abstractions.IScriptingLanguageEngine;
-import dev.ngspace.hudder.compilers.utils.CompileException;
 import dev.ngspace.hudder.compilers.utils.javascript.JavaScriptEngine;
+import dev.ngspace.hudder.exceptions.CompileException;
 import dev.ngspace.ngsmcconfig.api.NGSMCConfigCategory;
 
 public class JavaScriptCompiler extends AScriptingLanguageCompiler {

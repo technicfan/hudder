@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.Objects;
 
 import dev.ngspace.hudder.compilers.abstractions.AV2Compiler;
-import dev.ngspace.hudder.compilers.utils.CompileException;
+import dev.ngspace.hudder.exceptions.ExecutionException;
 import dev.ngspace.hudder.utils.HudderUtils;
 import dev.ngspace.hudder.v2runtime.V2Runtime;
 import dev.ngspace.hudder.v2runtime.values.constants.V2Array;
@@ -26,13 +26,13 @@ import dev.ngspace.hudder.v2runtime.values.operations.booloperations.V2OppositeO
 
 public class DefaultV2VariableParser implements IV2VariableParser {
 	
-	@Override public AV2Value parse(V2Runtime runtime, String valuee, AV2Compiler comp, int line, int charpos) throws CompileException {
+	@Override public AV2Value parse(V2Runtime runtime, String valuee, AV2Compiler comp, int line, int charpos) throws ExecutionException {
 		
 		String value = valuee.trim();
 		AV2Value[] values;// Some variables need it
 		
 		// Empty variable
-		if (value.isBlank()) throw new CompileException("Unknown variable: empty variable", line, charpos);
+		if (value.isBlank()) throw new ExecutionException("Unknown variable: empty variable", line, charpos);
 		
 		
 		
@@ -377,7 +377,7 @@ public class DefaultV2VariableParser implements IV2VariableParser {
 		
 		
 		// Fallback
-		throw new CompileException("Untokenizable variable: " + value, line, charpos);
+		throw new ExecutionException("Untokenizable variable: " + value, line, charpos);
 	}
 	
 	private V2String string(String value, AV2Compiler compiler, int line, int charpos) {
@@ -408,7 +408,7 @@ public class DefaultV2VariableParser implements IV2VariableParser {
 	
 	
 	
-	private AV2Value[] logicalOperator(char op, String value, V2Runtime runtime, int line, int charpos) throws CompileException {
+	private AV2Value[] logicalOperator(char op, String value, V2Runtime runtime, int line, int charpos) throws ExecutionException {
 		AV2Value[] values = new AV2Value[0];
 		StringBuilder builder = new StringBuilder();
 		for (int i = 0;i<value.length();i++) {

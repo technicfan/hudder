@@ -10,7 +10,7 @@ import org.mozilla.javascript.WrapFactory;
 import org.mozilla.javascript.lc.type.TypeInfo;
 import org.mozilla.javascript.lc.type.TypeInfoFactory;
 
-import dev.ngspace.hudder.compilers.utils.CompileException;
+import dev.ngspace.hudder.exceptions.ExecutionException;
 import dev.ngspace.hudder.utils.NoAccess;
 import dev.ngspace.hudder.utils.ObjectWrapper;
 import dev.ngspace.hudder.utils.ValueGetter;
@@ -44,7 +44,7 @@ public class HudderJavaScriptWrapFactory extends WrapFactory {
 		if (javaObject instanceof ObjectWrapper r) {
 			try {
 				return wrapAsJavaObject(cx, scope, r.get(), staticType);
-			} catch (CompileException e) {
+			} catch (ExecutionException e) {
 				e.printStackTrace();
 			}
 		}
