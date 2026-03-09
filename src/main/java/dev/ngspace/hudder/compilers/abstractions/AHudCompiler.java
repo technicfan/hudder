@@ -3,7 +3,6 @@ package dev.ngspace.hudder.compilers.abstractions;
 import java.util.HashMap;
 import java.util.Map;
 
-import dev.ngspace.hudder.Hudder;
 import dev.ngspace.hudder.compilers.utils.HudInformation;
 import dev.ngspace.hudder.config.HudderConfig;
 import dev.ngspace.hudder.exceptions.CompileException;
@@ -19,9 +18,6 @@ public abstract class AHudCompiler<T> {
 	public abstract Object getVariable(String key) throws ExecutionException;
 	
 	
-	public HudderConfig getConfig() {
-		return Hudder.config;
-	}
 	public abstract boolean setupHudSettings(NGSMCConfigCategory hudsettings);
 	
 	public HudInformation processAndCompile(HudderConfig config, String filepath, String filename)

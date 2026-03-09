@@ -5,7 +5,6 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.NoSuchElementException;
 
-import dev.ngspace.hudder.Hudder;
 import dev.ngspace.hudder.exceptions.ExecutionException;
 import dev.ngspace.hudder.v2runtime.V2Runtime;
 import dev.ngspace.hudder.v2runtime.values.AV2Value;
@@ -22,7 +21,6 @@ public class V2FunctionHandler {
 	}
 
 	public void bindAllAPIFunctions() {
-		if (Hudder.IS_DEBUG) bindFunction(new TestFunction(), 2, "test");
 		
 		//Type casting
 		

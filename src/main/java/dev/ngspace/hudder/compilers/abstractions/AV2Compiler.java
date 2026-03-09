@@ -121,7 +121,7 @@ public abstract class AV2Compiler extends AVarTextCompiler implements Binder {
 
 	public void defineFunctionOrMethod(String commands, String[] args, String name, TextPos pos, String filename)
 			throws CompileException {
-		V2Runtime runtime = buildRuntimeSafe(getConfig(), commands, pos, filename, null);
+		V2Runtime runtime = buildRuntimeSafe(Hudder.config, commands, pos, filename, null);
 		
 		boolean isMethod = !hasReturnValue(runtime);
 		

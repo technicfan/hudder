@@ -81,7 +81,7 @@ public class HudderBuiltInMethods {private HudderBuiltInMethods() {}
 		}, "set", "setVal", "setVariable");
 		api.registerConsumer((e,a,s)->{
 			try {
-				a.getConfig().putSavedVariable(s[0].asString(),s[1].get());
+				Hudder.config.putSavedVariable(s[0].asString(),s[1].get());
 			} catch (IOException ex) {
 				ex.printStackTrace();
 				throw new IllegalArgumentException(ex);

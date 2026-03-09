@@ -17,8 +17,10 @@ public class BuiltInTextureElement extends AUIElement {
 
 	private final Identifier atlasId;
 	private final Identifier spriteId;
-	private final int x, y;
-	private final int width, height;
+	private final int x;
+	private final int y;
+	private final int width;
+	private final int height;
 
 	public BuiltInTextureElement(Identifier atlasId, Identifier spriteId, int x, int y, int width, int height) {
 		this.atlasId = atlasId;
