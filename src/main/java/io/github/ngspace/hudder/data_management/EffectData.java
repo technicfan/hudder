@@ -20,6 +20,7 @@ public class EffectData implements DataVariable<Object> {
     }
     public static class Effect {
         public final String id;
+        public final String name;
         public final int amplifier;
         public final int duration;
         public final boolean ambient;
@@ -28,6 +29,7 @@ public class EffectData implements DataVariable<Object> {
 
         public Effect(MobEffectInstance e) {
             this.id = BuiltInRegistries.MOB_EFFECT.getKey(e.getEffect().value()).toString();
+            this.name = e.getEffect().value().getDisplayName().getString();
             this.amplifier = e.getAmplifier();
             this.duration = e.getDuration();
             this.ambient = e.isAmbient();
