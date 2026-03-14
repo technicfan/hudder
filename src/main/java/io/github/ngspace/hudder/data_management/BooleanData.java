@@ -112,6 +112,7 @@ public class BooleanData {private BooleanData(){}
 			case "globalvariablesenabled": yield config.globalVariablesEnabled;
 			case "background": yield config.background;
 			case "removegui": yield config.removegui;
+            case "removeeffects": yield config.removeeffects;
 			case "limitrate": yield config.limitrate;
 			default: yield DataVariableRegistry.getBoolean(key);
 		};
