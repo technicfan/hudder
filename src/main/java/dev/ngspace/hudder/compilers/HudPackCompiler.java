@@ -13,6 +13,7 @@ import dev.ngspace.hudder.exceptions.ExecutionException;
 import dev.ngspace.hudder.hudpacks.HudPack;
 import dev.ngspace.hudder.hudpacks.HudPackHudState;
 import dev.ngspace.hudder.utils.HudFileUtils;
+import dev.ngspace.hudder.v2runtime.values.AV2Value;
 import dev.ngspace.ngsmcconfig.api.NGSMCConfigCategory;
 
 public class HudPackCompiler extends AHudCompiler<HudPack> {
@@ -45,7 +46,7 @@ public class HudPackCompiler extends AHudCompiler<HudPack> {
 			elms.clear();
 			HudPackHudState state = new HudPackHudState();
 			for (var point : pack.hudpackpoints) {
-				if (point.config.conditions()==null||checkConditions(point.config.conditions()))
+				if (point.conditions==null||checkConditions(point.conditions))
 					point.execute(state);
 			}
 			return state.toResult(elms);
@@ -55,9 +56,9 @@ public class HudPackCompiler extends AHudCompiler<HudPack> {
 		}
 	}
 
-	private boolean checkConditions(String[] conditions) {
-		for (String cond : conditions) {
-			if (Boolean.FALSE.equals(DataVariableRegistry.getBoolean(cond)))
+	private boolean checkConditions(AV2Value[] conditions) throws ExecutionException {
+		for (AV2Value cond : conditions) {
+			if (!cond.asBoolean())
 				return false;
 		}
 		return true;

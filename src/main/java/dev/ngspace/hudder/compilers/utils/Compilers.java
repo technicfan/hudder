@@ -12,10 +12,12 @@ import dev.ngspace.hudder.compilers.abstractions.AHudCompiler;
 public class Compilers {private Compilers() {}
 	
 	private static Map<String, AHudCompiler<?>> registeredcompilers = new HashMap<String,AHudCompiler<?>>();
+	//Made this to make sure there aren't a fuckton of HudderV2Compiler objects being initalized by accident
+	public static final HudderV2Compiler hudderV2Compiler = new HudderV2Compiler();
 	
 	
 	public static void registerDefaultCompilers() {
-		registeredcompilers.put("hudder", new HudderV2Compiler());
+		registeredcompilers.put("hudder", hudderV2Compiler);
 		registeredcompilers.put("js", new JavaScriptCompiler());
 		registeredcompilers.put("pack", new HudPackCompiler());
 	}

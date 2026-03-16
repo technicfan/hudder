@@ -32,11 +32,11 @@ public class HudderConfig {
 	public static final int HUDDER_CONFIG_VERSION = 4;
 	public static final File DEFAULT_CONFIG_FILE = new File(HudFileUtils.FABRIC_CONFIG_FOLDER + File.separator + "hudder.json");
 	
+	
 	public HudderUserSettings userSettings = new HudderUserSettings();
 	
 	
-	
-	private AHudCompiler<?> compiler = new HudderV2Compiler();
+	private AHudCompiler<?> compiler = Compilers.hudderV2Compiler;
 	private File configFile;
 	
 	
@@ -190,7 +190,7 @@ public class HudderConfig {
 		} catch (Exception e) {
 			e.printStackTrace();
 			Hudder.log("Using default compiler due to error");
-			compiler = new HudderV2Compiler();
+			compiler = Compilers.hudderV2Compiler;
 		}
 	}
 	

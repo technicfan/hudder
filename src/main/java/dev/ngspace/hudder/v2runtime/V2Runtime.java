@@ -3,6 +3,8 @@ package dev.ngspace.hudder.v2runtime;
 import java.util.Arrays;
 import java.util.HashMap;
 
+import org.jetbrains.annotations.Nullable;
+
 import dev.ngspace.hudder.compilers.abstractions.AV2Compiler;
 import dev.ngspace.hudder.compilers.utils.CompileState;
 import dev.ngspace.hudder.exceptions.ExecutionException;
@@ -10,7 +12,7 @@ import dev.ngspace.hudder.v2runtime.runtime_elements.AV2RuntimeElement;
 
 public class V2Runtime {
 	public final AV2Compiler compiler;
-	protected V2Runtime scope;
+	protected @Nullable V2Runtime scope;
 	/**
 	 * Should stay mostly unused for now.
 	 */
@@ -61,7 +63,7 @@ public class V2Runtime {
 		return object;
 	}
 	
-	public V2Runtime getScope() {
+	public @Nullable V2Runtime getScope() {
 		return scope;
 	}
 	
