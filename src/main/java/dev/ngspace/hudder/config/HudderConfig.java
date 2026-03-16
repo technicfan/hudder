@@ -32,7 +32,6 @@ public class HudderConfig {
 	public static final int HUDDER_CONFIG_VERSION = 4;
 	public static final File DEFAULT_CONFIG_FILE = new File(HudFileUtils.FABRIC_CONFIG_FOLDER + File.separator + "hudder.json");
 	
-	
 	public HudderUserSettings userSettings = new HudderUserSettings();
 	
 	
@@ -367,6 +366,10 @@ public class HudderConfig {
 
 	public boolean removegui() {
 	    return userSettings.removegui;
+	}
+
+	public boolean removeeffects() {
+	    return userSettings.removeeffects;
 	}
 
 	public boolean limitrate() {

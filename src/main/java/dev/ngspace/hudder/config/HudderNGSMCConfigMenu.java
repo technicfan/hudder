@@ -139,6 +139,11 @@ public class HudderNGSMCConfigMenu { private HudderNGSMCConfigMenu() {}
 				.setSaveOperation(b->config.removegui=b)
 				.setDefaultValue(false)
 				.build());
+        advanced.addOption(BooleanNGSMCConfigOption.builder(config.removeeffects, Component.translatable("hudder.advanced.removeeffects"))
+				.setHoverComponent(Component.translatable("hudder.advanced.removeeffects.tooltip"))
+				.setSaveOperation(b->config.removeeffects=b)
+				.setDefaultValue(false)
+				.build());
 		advanced.addOption(BooleanNGSMCConfigOption.builder(config.limitrate, Component.translatable("hudder.advanced.limitrate"))
 				.setHoverComponent(Component.translatable("hudder.advanced.limitrate.tooltip"))
 				.setSaveOperation(b->config.limitrate=b)
