@@ -46,6 +46,7 @@ public class HudderBuiltInVariables {
 		register(k->Hudder.config.globalVariablesEnabled(), BOOLEAN, "globalvariablesenabled");
 		register(k->Hudder.config.background(), BOOLEAN, "background");
 		register(k->Hudder.config.removegui(), BOOLEAN, "removegui");
+		register(k->Hudder.config.removeeffects(), BOOLEAN, "removeeffects");
 		register(k->Hudder.config.limitrate(), BOOLEAN, "limitrate");
 		
 		// Strings

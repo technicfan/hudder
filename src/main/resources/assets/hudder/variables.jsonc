@@ -897,8 +897,13 @@
 			},
 			{
 				"name": "removegui",
-				"desc": "Is the HotBar removed",
+				"desc": "Is Minecraft's builtin HotBar removed",
 				"version": "3.0.0"
+			},
+			{
+				"name": "removeeffects",
+				"desc": "Is Minecraft's builtin Effects hud removed",
+				"version": "10.0.0"
 			},
 			{
 				"name": "limitrate",
