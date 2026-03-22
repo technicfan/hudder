@@ -56,8 +56,10 @@ public class HudderBuiltInVariables {
 		// Numbers
 		register(k->Hudder.config.scale(), NUMBER, "scale");
 		register(k->Hudder.config.color(), NUMBER, "color");
-		register(k->Hudder.config.yoffset(), NUMBER, "yoffset");
-		register(k->Hudder.config.xoffset(), NUMBER, "xoffset");
+		register(k->Hudder.config.yoffsetTop(), NUMBER, "yoffset_top", "yoffset");
+		register(k->Hudder.config.yoffsetBottom(), NUMBER, "yoffset_bottom");
+		register(k->Hudder.config.xoffsetLeft(), NUMBER, "xoffset_left", "xoffset");
+		register(k->Hudder.config.xoffsetRight(), NUMBER, "xoffset_right");
 		register(k->Hudder.config.lineHeight(), NUMBER, "lineheight");
 		register(k->Hudder.config.methodBuffer(), NUMBER, "methodbuffer");
 		register(k->Hudder.config.backgroundcolor(), NUMBER, "backgroundcolor");

@@ -29,7 +29,7 @@ import net.minecraft.client.Minecraft;
 
 public class HudderConfig {
 	
-	public static final int HUDDER_CONFIG_VERSION = 4;
+	public static final int HUDDER_CONFIG_VERSION = 5;
 	public static final File DEFAULT_CONFIG_FILE = new File(HudFileUtils.FABRIC_CONFIG_FOLDER + File.separator + "hudder.json");
 	
 	public HudderUserSettings userSettings = new HudderUserSettings();
@@ -173,6 +173,12 @@ public class HudderConfig {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
+		}
+		if (version<5) {
+			userSettings.xoffset_left = ((Number) newinfo.get("xoffset")).intValue();
+			userSettings.xoffset_right = ((Number) newinfo.get("xoffset")).intValue();
+			userSettings.yoffset_top = ((Number) newinfo.get("yoffset")).intValue();
+			userSettings.yoffset_bottom = ((Number) newinfo.get("yoffset")).intValue() - 1;
 		}
 	}
     
@@ -340,12 +346,20 @@ public class HudderConfig {
 	    return userSettings.color;
 	}
 
-	public int yoffset() {
-	    return userSettings.yoffset;
+	public int yoffsetTop() {
+	    return userSettings.yoffset_top;
 	}
 
-	public int xoffset() {
-	    return userSettings.xoffset;
+	public int yoffsetBottom() {
+	    return userSettings.yoffset_bottom;
+	}
+
+	public int xoffsetLeft() {
+	    return userSettings.xoffset_left;
+	}
+
+	public int xoffsetRight() {
+	    return userSettings.xoffset_right;
 	}
 
 	public int lineHeight() {

@@ -71,8 +71,8 @@ public class HudderRenderer implements HudElement {
         
         /* Top Left */
         String[] lines = text.TopLeftText().split(NL_REGEX);
-        int yoff = info.yoffset();
-        int xoff = info.xoffset();
+        int yoff = info.yoffsetTop();
+        int xoff = info.xoffsetLeft();
         for (String txt : lines) {
         	renderTextLine(context, txt, xoff, yoff, color, text.TLScale(), shadow, background, bgcolor);
         	yoff+=info.lineHeight() * text.TLScale();
@@ -81,8 +81,8 @@ public class HudderRenderer implements HudElement {
         /* Bottom Left */
         String[] BL = text.BottomLeftText().split(NL_REGEX);
         yoff = (int) (context.guiHeight() - countLines(text.BottomLeftText()) *
-        		info.lineHeight() * text.BLScale() - info.yoffset() + 1);
-        xoff = info.xoffset();
+        		info.lineHeight() * text.BLScale() - info.yoffsetBottom() + 1);
+        xoff = info.xoffsetLeft();
         for (String txt : BL) {
         	renderTextLine(context, txt, xoff, yoff, color, text.BLScale(), shadow, background, bgcolor);
         	yoff+=info.lineHeight() * text.BLScale();
@@ -90,9 +90,9 @@ public class HudderRenderer implements HudElement {
         
         /* Top Right */
         String[] TR = text.TopRightText().split(NL_REGEX);
-        yoff = info.yoffset();
+        yoff = info.yoffsetTop();
         for (String txt : TR) {
-        	xoff = (int) (context.guiWidth() - renderer.width(txt) * text.TRScale() - info.xoffset());
+        	xoff = (int) (context.guiWidth() - renderer.width(txt) * text.TRScale() - info.xoffsetRight());
         	renderTextLine(context, txt, xoff, yoff, color, text.TRScale(), shadow, background, bgcolor);
         	yoff+=info.lineHeight() * text.TRScale();
         }
@@ -100,9 +100,9 @@ public class HudderRenderer implements HudElement {
         /* Bottom Right */
         String[] BR = text.BottomRightText().split(NL_REGEX);
         yoff = (int) (context.guiHeight() - countLines(text.BottomRightText()) *
-        		info.lineHeight() * text.BRScale() - info.yoffset() + 1);
+        		info.lineHeight() * text.BRScale() - info.yoffsetBottom() + 1);
         for (String txt : BR) {
-        	xoff = (int) (context.guiWidth() - renderer.width(txt) * text.BRScale() - info.xoffset());
+        	xoff = (int) (context.guiWidth() - renderer.width(txt) * text.BRScale() - info.xoffsetRight());
         	renderTextLine(context, txt, xoff, yoff, color, text.BRScale(), shadow, background, bgcolor);
         	yoff+=info.lineHeight() * text.BRScale();
         }

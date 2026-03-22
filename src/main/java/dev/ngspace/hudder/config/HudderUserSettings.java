@@ -18,8 +18,10 @@ public class HudderUserSettings {
 	@Expose public boolean globalVariablesEnabled = true;
 	@Expose public float scale = 1f;
 	@Expose public int color = 0xFFd6d6d6;
-	@Expose public int yoffset = 1;
-	@Expose public int xoffset = 1;
+	@Expose public int yoffset_top = 1;
+	@Expose public int yoffset_bottom = 0;
+	@Expose public int xoffset_left = 1;
+	@Expose public int xoffset_right = 1;
 	@Expose public int lineHeight = 10;
 	@Expose public int methodBuffer = 2;
 	@Expose public int backgroundcolor = 0x86353535;

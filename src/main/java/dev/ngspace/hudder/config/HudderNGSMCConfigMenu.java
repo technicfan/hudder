@@ -93,14 +93,24 @@ public class HudderNGSMCConfigMenu { private HudderNGSMCConfigMenu() {}
 				.setSaveOperation(b->config.shadow=b)
 				.setDefaultValue(true)
 				.build());
-		text.addOption(IntNGSMCConfigOption.builder(config.yoffset, Component.translatable("hudder.text.yoffset"))
-				.setHoverComponent(Component.translatable("hudder.text.yoffset.tooltip"))
-				.setSaveOperation(b->config.yoffset=b)
+		text.addOption(IntNGSMCConfigOption.builder(config.yoffset_top, Component.translatable("hudder.text.yoffset_top"))
+				.setHoverComponent(Component.translatable("hudder.text.yoffset_top.tooltip"))
+				.setSaveOperation(b->config.yoffset_top=b)
 				.setDefaultValue(1)
 				.build());
-		text.addOption(IntNGSMCConfigOption.builder(config.xoffset, Component.translatable("hudder.text.xoffset"))
-				.setHoverComponent(Component.translatable("hudder.text.xoffset.tooltip"))
-				.setSaveOperation(b->config.xoffset=b)
+		text.addOption(IntNGSMCConfigOption.builder(config.yoffset_bottom, Component.translatable("hudder.text.yoffset_bottom"))
+				.setHoverComponent(Component.translatable("hudder.text.yoffset_bottom.tooltip"))
+				.setSaveOperation(b->config.yoffset_bottom=b)
+				.setDefaultValue(0)
+				.build());
+		text.addOption(IntNGSMCConfigOption.builder(config.xoffset_left, Component.translatable("hudder.text.xoffset_left"))
+				.setHoverComponent(Component.translatable("hudder.text.xoffset_left.tooltip"))
+				.setSaveOperation(b->config.xoffset_left=b)
+				.setDefaultValue(1)
+				.build());
+		text.addOption(IntNGSMCConfigOption.builder(config.xoffset_right, Component.translatable("hudder.text.xoffset_right"))
+				.setHoverComponent(Component.translatable("hudder.text.xoffset_right.tooltip"))
+				.setSaveOperation(b->config.xoffset_right=b)
 				.setDefaultValue(1)
 				.build());
 		text.addOption(IntNGSMCConfigOption.builder(config.lineHeight, Component.translatable("hudder.text.height"))

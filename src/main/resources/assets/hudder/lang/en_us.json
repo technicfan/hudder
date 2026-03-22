@@ -47,12 +47,18 @@
 	
 	"hudder.text.shadow":"Text Shadow",
 	"hudder.text.shadow.tooltip":"Whether text should have a shadow.",
-	
-	"hudder.text.yoffset":"Y offset",
-	"hudder.text.yoffset.tooltip":"Control the y offset of the text.",
-	
-	"hudder.text.xoffset":"X offset",
-	"hudder.text.xoffset.tooltip":"Control the x offset of the text.",
+
+	"hudder.text.yoffset_top":"Top padding",
+	"hudder.text.yoffset_top.tooltip":"Control the top padding of the text.",
+
+	"hudder.text.xoffset_left":"Left padding",
+	"hudder.text.xoffset_left.tooltip":"Control the left padding of the text.",
+
+	"hudder.text.yoffset_bottom":"Bottom padding",
+	"hudder.text.yoffset_bottom.tooltip":"Control the bottom padding of the text.",
+
+	"hudder.text.xoffset_right":"Right padding",
+	"hudder.text.xoffset_right.tooltip":"Control the right padding of the text.",
 	
 	"hudder.text.height":"Text height",
 	"hudder.text.height.tooltip":"Control the line height of the text.",
