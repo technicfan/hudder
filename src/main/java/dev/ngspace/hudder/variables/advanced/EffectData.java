@@ -1,7 +1,5 @@
 package dev.ngspace.hudder.variables.advanced;
 
-import java.util.Objects;
-
 import dev.ngspace.hudder.api.variableregistry.DataVariable;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -10,13 +8,9 @@ import net.minecraft.world.effect.MobEffectInstance;
 public class EffectData implements DataVariable<Object> {
     @Override
     public Object getValue0(String key) {
-        var ins = Minecraft.getInstance();
-        if (Objects.equals(key, "active_effects")) {
-            return ins.player.getActiveEffects().stream()
-                    .map(Effect::new)
-                    .toList();
-        }
-        return null;
+        return Minecraft.getInstance().player.getActiveEffects().stream()
+                .map(Effect::new)
+                .toList();
     }
     public static class Effect {
         public final String id;

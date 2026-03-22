@@ -155,8 +155,8 @@ public class HudPack {
 				}
 			});
 			engine.bindFunction(e->getSettingValue(e[0].asString()), "getHudSetting");
-			engine.evaluateCode(point_code, hud);
 			engines.put(hud, engine);
+			engine.evaluateCode(point_code, hud);
 		}
 		return engines.get(hud);
 	}

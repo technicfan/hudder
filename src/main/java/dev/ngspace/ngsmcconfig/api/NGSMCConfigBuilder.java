@@ -15,7 +15,7 @@ public class NGSMCConfigBuilder {
 	Screen parent;
 	List<NGSMCConfigCategory> categories = new ArrayList<NGSMCConfigCategory>();
 	Runnable writeoperation = () -> {};
-	URI wikiUri;
+	URI docsUri;
 	File configfile;
 	
 	public NGSMCConfigBuilder(Screen parent) {
@@ -29,15 +29,15 @@ public class NGSMCConfigBuilder {
 	}
 	
 	public Screen build() {
-		return new NGSMCConfigCategorySelectionScreen(parent, categories, writeoperation, wikiUri, configfile);
+		return new NGSMCConfigCategorySelectionScreen(parent, categories, writeoperation, docsUri, configfile);
 	}
 
 	public void setWriteOperation(Runnable writeoperation) {
 		this.writeoperation = writeoperation;
 	}
 
-	public void setWikiUri(URI wikiUri) {
-		this.wikiUri = wikiUri;
+	public void setDocsUri(URI docsUri) {
+		this.docsUri = docsUri;
 	}
 
 	public void setConfigFile(File configfile) {
