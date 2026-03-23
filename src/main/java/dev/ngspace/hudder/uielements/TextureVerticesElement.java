@@ -3,7 +3,7 @@ package dev.ngspace.hudder.uielements;
 import dev.ngspace.hudder.main.HudderRenderer;
 import dev.ngspace.hudder.utils.HudFileUtils;
 import net.minecraft.client.DeltaTracker;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.resources.Identifier;
 
 public class TextureVerticesElement extends AUIElement {
@@ -24,7 +24,7 @@ public class TextureVerticesElement extends AUIElement {
 			throw new IllegalArgumentException("Image not loaded (Or file is not a valid image): " + filename);
 	}
 	
-	@Override public void renderElement(GuiGraphics context, HudderRenderer renderer, DeltaTracker delta) {
+	@Override public void renderElement(GuiGraphicsExtractor context, HudderRenderer renderer, DeltaTracker delta) {
 		renderer.renderTexturedVertexArray(context, vertices, textures, id, triangles);
 	}
 	

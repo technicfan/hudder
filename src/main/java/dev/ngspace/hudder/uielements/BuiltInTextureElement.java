@@ -1,14 +1,14 @@
 package dev.ngspace.hudder.uielements;
 
 import dev.ngspace.hudder.main.HudderRenderer;
-import net.minecraft.client.DeltaTracker;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.client.renderer.RenderPipelines;
-import net.minecraft.resources.Identifier;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.minecraft.client.DeltaTracker;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.renderer.RenderPipelines;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.resources.Identifier;
 
 @Environment(EnvType.CLIENT)
 public class BuiltInTextureElement extends AUIElement {
@@ -32,7 +32,7 @@ public class BuiltInTextureElement extends AUIElement {
 	}
 
 	@Override
-	public void renderElement(GuiGraphics context, HudderRenderer renderer, DeltaTracker delta) {
+	public void renderElement(GuiGraphicsExtractor context, HudderRenderer renderer, DeltaTracker delta) {
 
 		TextureAtlasSprite sprite = mc.getAtlasManager().getAtlasOrThrow(atlasId).getSprite(spriteId);
 

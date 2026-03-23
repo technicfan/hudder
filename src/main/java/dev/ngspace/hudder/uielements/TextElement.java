@@ -2,7 +2,7 @@ package dev.ngspace.hudder.uielements;
 
 import dev.ngspace.hudder.main.HudderRenderer;
 import net.minecraft.client.DeltaTracker;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 
 public class TextElement extends AUIElement {
 	
@@ -26,7 +26,7 @@ public class TextElement extends AUIElement {
 		this.shadow = shadow;
 		this.background = background;
 	}
-	@Override public void renderElement(GuiGraphics context, HudderRenderer renderer, DeltaTracker delta) {
+	@Override public void renderElement(GuiGraphicsExtractor context, HudderRenderer renderer, DeltaTracker delta) {
 		renderer.renderTextLine(context, text, x, y, color, scale, shadow, background, backgroundcolor);
 	}
 }

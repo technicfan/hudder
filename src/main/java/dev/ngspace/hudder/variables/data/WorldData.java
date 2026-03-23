@@ -48,8 +48,8 @@ public class WorldData extends HudderBuiltInVariables {
 		register(k->ins.player.getBlockY() & 0xF, NUMBER, "subchunky");
 		register(k->ins.player.getBlockZ() & 0xF, NUMBER, "subchunkz");
 
-		register(k->ins.player.chunkPosition().x, NUMBER, "chunkx");
-		register(k->ins.player.chunkPosition().z, NUMBER, "chunkz");
+		register(k->ins.player.chunkPosition().x(), NUMBER, "chunkx");
+		register(k->ins.player.chunkPosition().z(), NUMBER, "chunkz");
 
 		/* Camera chunk information */
 		
@@ -117,8 +117,8 @@ public class WorldData extends HudderBuiltInVariables {
 		}, STRING, "world_name");
 
 		// Time
-		register(k->ins.level.getDayTime(), NUMBER, "worldtime", "world_time");
-		register(k->ins.level.getDayTime() / 24000d, NUMBER, "daytime", "day_time");
+		register(k->ins.level.getGameTime(), NUMBER, "worldtime", "world_time");
+		register(k->ins.level.getGameTime() / 24000d, NUMBER, "daytime", "day_time");
 
 		// Slime chunk
 		register(k->{

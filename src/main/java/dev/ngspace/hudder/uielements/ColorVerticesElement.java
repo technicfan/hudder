@@ -2,7 +2,7 @@ package dev.ngspace.hudder.uielements;
 
 import dev.ngspace.hudder.main.HudderRenderer;
 import net.minecraft.client.DeltaTracker;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 
 public class ColorVerticesElement extends AUIElement {
 	
@@ -15,7 +15,7 @@ public class ColorVerticesElement extends AUIElement {
         this.argb = argb;
         this.mode = triangle_strip;
 	}
-	@Override public void renderElement(GuiGraphics context, HudderRenderer renderer, DeltaTracker delta) {
+	@Override public void renderElement(GuiGraphicsExtractor context, HudderRenderer renderer, DeltaTracker delta) {
 		renderer.renderColoredVertexArray(context, vertices, argb, mode);
 	}
 	

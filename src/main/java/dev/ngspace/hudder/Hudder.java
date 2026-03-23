@@ -30,7 +30,7 @@ import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
-import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
+import net.fabricmc.fabric.api.client.keymapping.v1.KeyMappingHelper;
 import net.fabricmc.fabric.api.client.rendering.v1.hud.HudElementRegistry;
 import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.ModContainer;
@@ -80,14 +80,14 @@ public class Hudder implements ClientModInitializer {
 		
 		var keycategory = KeyMapping.Category.register(Identifier.parse("hudder.keybinds"));
 		
-		configkeybind = KeyBindingHelper.registerKeyBinding(new KeyMapping(
+		configkeybind = KeyMappingHelper.registerKeyMapping(new KeyMapping(
             "hudder.configkeybind",
             InputConstants.Type.KEYSYM,
             GLFW.GLFW_KEY_R,
             keycategory
         ));
 		
-		reloadkeybind = KeyBindingHelper.registerKeyBinding(new KeyMapping(
+		reloadkeybind = KeyMappingHelper.registerKeyMapping(new KeyMapping(
             "hudder.reloadkeybind",
             InputConstants.Type.KEYSYM,
             GLFW.GLFW_KEY_H,
@@ -187,6 +187,6 @@ public class Hudder implements ClientModInitializer {
 	public static void error(Object str) {LOGGER.error(String.valueOf(str));}
 	public static void debug(Object str) {LOGGER.debug(String.valueOf(str));}
 	public static void alert(Object str) {
-		Minecraft.getInstance().player.displayClientMessage(Component.keybind(String.valueOf(str)),false);
+		Minecraft.getInstance().player.sendSystemMessage(Component.keybind(String.valueOf(str)));
 	}
 }

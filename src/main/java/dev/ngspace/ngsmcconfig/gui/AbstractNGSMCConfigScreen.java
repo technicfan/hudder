@@ -6,7 +6,7 @@ import java.util.List;
 
 import dev.ngspace.ngsmcconfig.api.NGSMCConfigCategory;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.StringWidget;
 import net.minecraft.client.gui.screens.ConfirmScreen;
@@ -147,7 +147,7 @@ public abstract class AbstractNGSMCConfigScreen extends Screen {
 	}
 	
     @Override
-    public void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTick) {
+    public void extractRenderState(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float partialTick) {
 		
 		Component error = getError();
 		
@@ -155,8 +155,8 @@ public abstract class AbstractNGSMCConfigScreen extends Screen {
 		errorWidget.setMessage(stylizeErrorComponment(error));
 		
         if (container!=null)
-        	container.render(graphics, mouseX, mouseY, partialTick);
-        super.render(graphics, mouseX, mouseY, partialTick);
+        	container.extractRenderState(graphics, mouseX, mouseY, partialTick);
+        super.extractRenderState(graphics, mouseX, mouseY, partialTick);
     }
 
 	private Component stylizeErrorComponment(Component error) {
