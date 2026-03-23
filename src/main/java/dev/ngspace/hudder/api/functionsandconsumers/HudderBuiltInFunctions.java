@@ -40,7 +40,7 @@ public class HudderBuiltInFunctions {private HudderBuiltInFunctions() {}
 				AHudCompiler<?> ecompiler = Compilers.getCompilerFromName(s[1].asString());
 				for (var i : HudCompilationManager.precomplistners) i.accept(ecompiler);
 				
-				HudInformation result = ecompiler.processAndCompile(Hudder.config,s[0].asString(),s[0].asString());
+				HudInformation result = ecompiler.processAndExecute(Hudder.config,s[0].asString(),s[0].asString());
 
 				for (var v : result.elements()) m.addUIElement(v);
 				for (var v : e) m.addUIElement(v);

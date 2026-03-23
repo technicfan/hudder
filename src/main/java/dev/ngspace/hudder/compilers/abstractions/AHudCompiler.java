@@ -20,7 +20,7 @@ public abstract class AHudCompiler<T> {
 	
 	public abstract boolean setupHudSettings(NGSMCConfigCategory hudsettings);
 	
-	public HudInformation processAndCompile(HudderConfig config, String filepath, String filename)
+	public HudInformation processAndExecute(HudderConfig config, String filepath, String filename)
 			throws CompileException, ExecutionException {
 		return execute(config, processFile(filepath), filename);
 	}
