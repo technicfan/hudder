@@ -29,17 +29,17 @@ public abstract class AbstractNGSMCConfigScreen extends Screen {
 	protected Button configButton;
 	protected StringWidget errorWidget;
 	protected Runnable writeoperation;
-	protected URI wikiUri;
+	protected URI docsUri;
 	protected File configfile;
 	
 	protected AbstractNGSMCConfigScreen(Screen parentScreen, List<NGSMCConfigCategory> categories, boolean c,
-			Runnable writeoperation, URI wikiUri, File configfile) {
+			Runnable writeoperation, URI docsUri, File configfile) {
 		super(Component.literal("NGSMCConfig"));
 		this.categories = categories;
 		this.parent = parentScreen;
 		this.createContainer = c;
 		this.writeoperation = writeoperation;
-		this.wikiUri = wikiUri;
+		this.docsUri = docsUri;
 		this.configfile = configfile;
 	}
 	@Override
@@ -66,14 +66,14 @@ public abstract class AbstractNGSMCConfigScreen extends Screen {
 		if (configfile!=null) {
 			configButton = Button.builder(Component.translatable("ngsmcconfig.config"),
 					b->Util.getPlatform().openFile(configfile))
-					.bounds(width-(wikiUri!=null?150:120), 0, 70, 20)
+					.bounds(width-(docsUri!=null?150:120), 0, 70, 20)
 					.build();
 			addRenderableWidget(configButton);
 		}
 		
-		if (wikiUri!=null) {
+		if (docsUri!=null) {
 			wikiButton = Button.builder(Component.translatable("ngsmcconfig.wiki"),
-					b->clickUrlAction(Minecraft.getInstance(), this, wikiUri))
+					b->clickUrlAction(Minecraft.getInstance(), this, docsUri))
 					.bounds(width-80, 0, 40, 20)
 					.build();
 			addRenderableWidget(wikiButton);
@@ -90,7 +90,7 @@ public abstract class AbstractNGSMCConfigScreen extends Screen {
 			int width = Minecraft.getInstance().getWindow().getGuiScaledWidth();
 			int height = Minecraft.getInstance().getWindow().getGuiScaledHeight();
 		
-			container = new NGSMCConfigOptionsListWidget(Minecraft.getInstance(), width, height, 35);
+			container = new NGSMCConfigOptionsListWidget(Minecraft.getInstance(), width, height-35, 35);
 			
 			addRenderableWidget(container);
 		}

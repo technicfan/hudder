@@ -15,7 +15,6 @@ public class NGSMCConfigOptionsListWidget extends ContainerObjectSelectionList<N
     }
     
     @Override protected void renderListBackground(GuiGraphics guiGraphics) {/* It ugly ;_; */}
-    @Override protected void renderListSeparators(GuiGraphics guiGraphics) {/* It ugly too */}
     
     @Override
     public int getRowWidth() {
