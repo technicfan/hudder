@@ -25,9 +25,9 @@ public abstract class AbstractTextFieldNGSMCConfigOption<T> extends AbstractNGSM
 		widget = new EditBox(Minecraft.getInstance().font, 0, 0, 100, 20, Component.literal(""));
 		widget.setMaxLength(max_length);
 		widget.setValue(stringify());
-		widget.setFilter(e->{
+		widget.setResponder(e->{
 			edited = true;
-			return textfilter.test(e);
+			textfilter.test(e);
 		});
 		return new NGSMCConfigEntry(widget, text, this);
 	}

@@ -3,7 +3,7 @@ package dev.ngspace.ngsmcconfig.options;
 import dev.ngspace.ngsmcconfig.api.AbstractNGSMCConfigOptionBuilder;
 import dev.ngspace.ngsmcconfig.gui.NGSMCConfigEntry;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.network.chat.Component;
 
 public class TextDescriptionNGSMCConfigOption extends AbstractNGSMCConfigOption<String> {
@@ -24,11 +24,12 @@ public class TextDescriptionNGSMCConfigOption extends AbstractNGSMCConfigOption<
 	@Override
 	public NGSMCConfigEntry buildEntry() {
 		return new NGSMCConfigEntry(null, Component.empty(), this) {
+			
 			@Override
-			public void renderContent(GuiGraphics graphics, int mouseX, int mouseY, boolean hovered,
+			public void extractContent(GuiGraphicsExtractor graphics, int mouseX, int mouseY, boolean hovered,
 					float partialTick) {
-				super.renderContent(graphics, mouseX, mouseY, hovered, partialTick);
-				graphics.drawCenteredString(Minecraft.getInstance().font, text, getX()+getWidth()/2, getY(), 0xFFFFFFFF);
+				super.extractContent(graphics, mouseX, mouseY, hovered, partialTick);
+				graphics.centeredText(Minecraft.getInstance().font, text, getX()+getWidth()/2, getY(), 0xFFFFFFFF);
 			}
 		};
 	}

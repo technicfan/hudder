@@ -6,10 +6,10 @@ import org.spongepowered.asm.mixin.gen.Accessor;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.LevelRenderer;
-import net.minecraft.client.renderer.state.LevelRenderState;
+import net.minecraft.client.renderer.state.level.LevelRenderState;
 
 @Environment(EnvType.CLIENT)
 @Mixin(LevelRenderer.class)
 public interface LevelRendererAccess {
 	@Accessor LevelRenderState getLevelRenderState();
-}
+}	

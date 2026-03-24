@@ -7,7 +7,7 @@ import dev.ngspace.hudder.mixin.InGameHudAccessor;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.contextualbar.ContextualBarRenderer;
 
 /**
@@ -35,7 +35,7 @@ public class GameHudElement extends AUIElement {
 		this.type = type;
 	}
 
-	@Override public void renderElement(GuiGraphics context, HudderRenderer renderer, DeltaTracker delta) {
+	@Override public void renderElement(GuiGraphicsExtractor context, HudderRenderer renderer, DeltaTracker delta) {
 		try {
 			InGameHudAccessor acchud = (InGameHudAccessor) (mc.gui);
 			float scaledWidth = context.guiWidth();
@@ -59,12 +59,12 @@ public class GameHudElement extends AUIElement {
 						contextualInfoBar = Pair.of(contextualInfo, contextualInfoBarRenderers.get(contextualInfo).get());
 					}
 
-					contextualInfoBar.getValue().renderBackground(context, delta);
+					contextualInfoBar.getValue().extractBackground(context, delta);
 					if (mc.gameMode.hasExperience() && mc.player.experienceLevel > 0) {
-						ContextualBarRenderer.renderExperienceLevel(context, mc.font, mc.player.experienceLevel);
+						ContextualBarRenderer.extractExperienceLevel(context, mc.font, mc.player.experienceLevel);
 					}
 
-					contextualInfoBar.getValue().render(context, delta);
+					contextualInfoBar.getValue().extractRenderState(context, delta);
 					break;
 				case HOTBAR:
 			        matrixStack.translate(x-scaledWidth/2, y-scaledHeight);

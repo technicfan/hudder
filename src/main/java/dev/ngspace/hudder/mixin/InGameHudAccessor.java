@@ -11,15 +11,15 @@ import org.spongepowered.asm.mixin.gen.Invoker;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.Gui.ContextualInfo;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.contextualbar.ContextualBarRenderer;
 
 @Mixin(Gui.class)
 public interface InGameHudAccessor {
-    @Invoker public void callRenderPlayerHealth(GuiGraphics context);
-    @Invoker public void callRenderVehicleHealth(GuiGraphics context);
-    @Invoker public void callRenderSelectedItemName(GuiGraphics context);
-    @Invoker public void callRenderHotbarAndDecorations(GuiGraphics context, DeltaTracker timeDelta);
+    @Invoker("extractPlayerHealth") public void callRenderPlayerHealth(GuiGraphicsExtractor context);
+    @Invoker("extractVehicleHealth") public void callRenderVehicleHealth(GuiGraphicsExtractor context);
+    @Invoker("extractSelectedItemName") public void callRenderSelectedItemName(GuiGraphicsExtractor context);
+    @Invoker("extractHotbarAndDecorations") public void callRenderHotbarAndDecorations(GuiGraphicsExtractor context, DeltaTracker timeDelta);
 
     @Invoker public Gui.ContextualInfo callNextContextualInfoState();
     @Accessor("contextualInfoBar") public Pair<ContextualInfo, ContextualBarRenderer> contextualInfoBar();

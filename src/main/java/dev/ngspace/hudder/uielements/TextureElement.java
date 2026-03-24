@@ -3,7 +3,7 @@ package dev.ngspace.hudder.uielements;
 import dev.ngspace.hudder.main.HudderRenderer;
 import dev.ngspace.hudder.utils.HudFileUtils;
 import net.minecraft.client.DeltaTracker;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.resources.Identifier;
 
@@ -25,7 +25,7 @@ public class TextureElement extends AUIElement {
 			throw new IllegalArgumentException("Image not loaded (Or file is not a valid image): " + filename);
 	}
 	
-	@Override public void renderElement(GuiGraphics context, HudderRenderer renderer, DeltaTracker delta) {
+	@Override public void renderElement(GuiGraphicsExtractor context, HudderRenderer renderer, DeltaTracker delta) {
 		context.blit(RenderPipelines.GUI_TEXTURED,id, x, y, 0, 0f, width, height, width, height);
 	}
 }

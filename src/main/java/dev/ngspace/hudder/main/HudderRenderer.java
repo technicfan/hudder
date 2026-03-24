@@ -17,7 +17,7 @@ import net.fabricmc.fabric.api.client.rendering.v1.hud.HudElement;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.render.TextureSetup;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.client.renderer.texture.DynamicTexture;
@@ -50,19 +50,19 @@ public class HudderRenderer implements HudElement {
 	
 	
 	
-	protected void renderFail(GuiGraphics context, String FailMessage) {
+	protected void renderFail(GuiGraphicsExtractor context, String FailMessage) {
 		List<FormattedCharSequence> lines = mc.font.split(FormattedText.of(FailMessage),
 			mc.getWindow().getGuiScaledWidth()-10);
 		int y = 1;
 		for (FormattedCharSequence line : lines) {
-        	context.drawString(mc.font, line, 1, y, 0xFFFF5555, true);
+        	context.text(mc.font, line, 1, y, 0xFFFF5555, true);
 			y+=9;
 		}
 	}
 	
 	
 	
-	protected void renderHudInformation(GuiGraphics context, Font renderer, HudInformation text, HudderConfig info,
+	protected void renderHudInformation(GuiGraphicsExtractor context, Font renderer, HudInformation text, HudderConfig info,
 			DeltaTracker delta) {
         int color = info.color();
         int bgcolor = info.backgroundcolor();
@@ -120,7 +120,7 @@ public class HudderRenderer implements HudElement {
     
     
 
-	public void renderTextLine(GuiGraphics context, String text, int x, int y, int color, float scale, boolean shadow,
+	public void renderTextLine(GuiGraphicsExtractor context, String text, int x, int y, int color, float scale, boolean shadow,
 			boolean background, int backgroundColor) {
         if (scale != 1.0f) {
             Matrix3x2fStack matrixStack = context.pose();
@@ -130,27 +130,27 @@ public class HudderRenderer implements HudElement {
             matrixStack.translate(-x, -y);
     		if (background&&!"".equals(text))
     			renderBlock(context,x-1,y-1,mc.font.width(text)+2,10,backgroundColor);
-            context.drawString(mc.font, text, x, y, color, shadow);
+            context.text(mc.font, text, x, y, color, shadow);
             matrixStack.popMatrix();
         } else {
     		if (background&&!"".equals(text))
     			renderBlock(context,x-1,y-1,mc.font.width(text)+2,10,backgroundColor);
-        	context.drawString(mc.font, text, x, y, color, shadow);
+        	context.text(mc.font, text, x, y, color, shadow);
         }
     }
 	
 	
 	
-	public void renderBlock(GuiGraphics graphics, int x, int y, int width, int height, int argb) {
+	public void renderBlock(GuiGraphicsExtractor graphics, int x, int y, int width, int height, int argb) {
 		graphics.fill(x, y, x+width, y+height, argb);
 	}
 	
 	
 	
-	public void renderTexture9Slice(GuiGraphics context, Identifier id, float x, float y, float width,
+	public void renderTexture9Slice(GuiGraphicsExtractor context, Identifier id, float x, float y, float width,
 			float height, float[] slices) {
 		var tex = mc.getTextureManager().getTexture(id);
-		context.guiRenderState.submitGuiElement(new TextureRenderState(TextureSetup.singleTexture(tex.getTextureView(),
+		context.guiRenderState.addGuiElement(new TextureRenderState(TextureSetup.singleTexture(tex.getTextureView(),
 				tex.getSampler()), RenderPipelines.GUI_TEXTURED, vconsumer->{
 		    Matrix3x2fStack matrix = context.pose();
 	        NativeImage img = ((DynamicTexture)mc.getTextureManager().getTexture(id)).getPixels();
@@ -233,10 +233,10 @@ public class HudderRenderer implements HudElement {
 		}));
 	}
 
-	public void renderTexturedVertexArray(GuiGraphics context, float[] vertices, float[] textures,
+	public void renderTexturedVertexArray(GuiGraphicsExtractor context, float[] vertices, float[] textures,
 			Identifier id, boolean triangles) {
 		var tex = mc.getTextureManager().getTexture(id);
-		context.guiRenderState.submitGuiElement(new TextureRenderState(TextureSetup.singleTexture(tex.getTextureView(),
+		context.guiRenderState.addGuiElement(new TextureRenderState(TextureSetup.singleTexture(tex.getTextureView(),
 				tex.getSampler()),
 				triangles ? GUI_TEXTURED_TRIANGLES : RenderPipelines.GUI_TEXTURED, vconsumer->{
 		        Matrix3x2fStack matrix = context.pose();
@@ -264,7 +264,7 @@ public class HudderRenderer implements HudElement {
 	 * @param mode The rendering mode
 	 */
 	@Deprecated(since = "TBD", forRemoval = false)
-	public void renderColoredVertexArray(GuiGraphics context, float[] vertices, int r, int g, int b, int a,
+	public void renderColoredVertexArray(GuiGraphicsExtractor context, float[] vertices, int r, int g, int b, int a,
 			boolean triangle_strip) {
 		renderColoredVertexArray(context, vertices, ARGB.color(r, g, b, a), triangle_strip);
 	}
@@ -278,8 +278,8 @@ public class HudderRenderer implements HudElement {
 	 * @param argb The ARGB color value
 	 * @param mode The rendering mode
 	 */
-	public void renderColoredVertexArray(GuiGraphics context, float[] vertices, int argb, boolean triangle_strip) {
-		context.guiRenderState.submitGuiElement(new TextureRenderState(TextureSetup.noTexture(),
+	public void renderColoredVertexArray(GuiGraphicsExtractor context, float[] vertices, int argb, boolean triangle_strip) {
+		context.guiRenderState.addGuiElement(new TextureRenderState(TextureSetup.noTexture(),
 			triangle_strip ? GUI_TEXTURED_TRIANGLES : RenderPipelines.GUI_TEXTURED, vconsumer -> {
 			
 	        Matrix3x2fStack matrix = context.pose();
@@ -291,7 +291,7 @@ public class HudderRenderer implements HudElement {
 	
 	
 	
-	@Override public void render(GuiGraphics context, DeltaTracker delta) {
+	@Override public void extractRenderState(GuiGraphicsExtractor context, DeltaTracker delta) {
 		try {
 			if (!Hudder.config.limitrate()) compman.compile(delta);
 			if (Hudder.config.shouldDrawResult()) {

@@ -10,7 +10,7 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.gui.Gui;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 
 @Environment(EnvType.CLIENT)
 @Mixin(Gui.class)
@@ -18,14 +18,14 @@ public class InGameHudInjections {
 	public boolean shouldNotDraw() {return Hudder.config.removegui()&&Hudder.config.shouldCompile();}
     public boolean shouldNotDrawEffects() {return Hudder.config.removeeffects()&&Hudder.config.shouldCompile();}
 
-	@Inject(method = "renderHotbarAndDecorations", at = @At("HEAD"),cancellable=true)
-    public void disableHotbarAndDecorations(GuiGraphics context, DeltaTracker tickCounter, CallbackInfo i) {
+	@Inject(method = "extractHotbarAndDecorations", at = @At("HEAD"),cancellable=true)
+    public void disableHotbarAndDecorations(GuiGraphicsExtractor context, DeltaTracker tickCounter, CallbackInfo i) {
 		if(shouldNotDraw()) {
 			i.cancel();
 		}
 	}
 
-    @Inject(method = "renderEffects", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "extractEffects", at = @At("HEAD"), cancellable = true)
     public void disableEffectsHud(CallbackInfo ci) {
         if (shouldNotDrawEffects()) {
             ci.cancel();

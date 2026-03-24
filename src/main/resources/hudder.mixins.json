@@ -10,7 +10,8 @@
     	"InGameHudInjections",
     	"InGameHudAccessor",
 		"MouseHandlerInjections",
-		"ItemCooldownsAccessor"
+		"ItemCooldownsAccessor",
+		"GuiGraphicsExtractorAccessor"
 	],
 	"mixins": [
 	],
