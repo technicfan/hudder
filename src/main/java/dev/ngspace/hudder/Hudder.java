@@ -153,7 +153,7 @@ public class Hudder implements ClientModInitializer {
 		HudderRenderer renderer = new HudderRenderer(compman);
 		HudElementRegistry.addLast(renderer.hudElementRegistryID, renderer);
         
-        ClientLifecycleEvents.CLIENT_STARTED.register(c->{
+        ClientLifecycleEvents.CLIENT_STARTED.register(_->{
 			try {
 				HudFileUtils.reloadResources();
 				if (config.globalVariables().size()>0)
@@ -166,7 +166,7 @@ public class Hudder implements ClientModInitializer {
         
         // Make sure the FPS variable is updated once every compilation instead of every time a number variable is used
         var mc = Minecraft.getInstance();
-        HudCompilationManager.addPreCompilerListener(c->Misc.fps = Misc.getFPS(mc));
+        HudCompilationManager.addPreCompilerListener(_->Misc.fps = Misc.getFPS(mc));
 		
 		log("Hudder has finished loading!");
 	}
