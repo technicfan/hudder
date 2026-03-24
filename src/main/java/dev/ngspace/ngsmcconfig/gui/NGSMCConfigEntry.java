@@ -64,7 +64,6 @@ public class NGSMCConfigEntry extends ContainerObjectSelectionList.Entry<NGSMCCo
         	widget.extractRenderState(graphics, mouseX, mouseY, partialTick);
         } else {
         	text.setSize(width, height);
-//        	text.visitLines(graphics, width, height, y);
         }
         text.setPosition(x, y);
         text.extractWidgetRenderState(graphics, mouseX, mouseY, partialTick);
@@ -80,7 +79,7 @@ public class NGSMCConfigEntry extends ContainerObjectSelectionList.Entry<NGSMCCo
         
         if (hoveredwidget.isPresent() && hoveredwidget.get() instanceof AbstractWidget hoveredawidget) {
             Style style = hoveredawidget.getMessage().getStyle();
-//            ((GuiGraphicsExtractorAccessor) graphics).callComponentHoverEffect(Minecraft.getInstance().font, style, mouseX-5, mouseY+10);
+            ((GuiGraphicsExtractorAccessor) graphics).callComponentHoverEffect(Minecraft.getInstance().font, style, mouseX-5, mouseY+10);
         }
     }
 

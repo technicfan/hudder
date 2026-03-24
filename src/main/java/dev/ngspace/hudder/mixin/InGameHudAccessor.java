@@ -16,12 +16,12 @@ import net.minecraft.client.gui.contextualbar.ContextualBarRenderer;
 
 @Mixin(Gui.class)
 public interface InGameHudAccessor {
-//    @Invoker public void callRenderPlayerHealth(GuiGraphicsExtractor context);
-//    @Invoker public void callRenderVehicleHealth(GuiGraphicsExtractor context);
-//    @Invoker public void callRenderSelectedItemName(GuiGraphicsExtractor context);
-//    @Invoker public void callRenderHotbarAndDecorations(GuiGraphicsExtractor context, DeltaTracker timeDelta);
-//
-//    @Invoker public Gui.ContextualInfo callNextContextualInfoState();
-//    @Accessor("contextualInfoBar") public Pair<ContextualInfo, ContextualBarRenderer> contextualInfoBar();
-//    @Accessor("contextualInfoBarRenderers") public Map<ContextualInfo, Supplier<ContextualBarRenderer>> contextualInfoBarRenderers();
+    @Invoker("extractPlayerHealth") public void callRenderPlayerHealth(GuiGraphicsExtractor context);
+    @Invoker("extractVehicleHealth") public void callRenderVehicleHealth(GuiGraphicsExtractor context);
+    @Invoker("extractSelectedItemName") public void callRenderSelectedItemName(GuiGraphicsExtractor context);
+    @Invoker("extractHotbarAndDecorations") public void callRenderHotbarAndDecorations(GuiGraphicsExtractor context, DeltaTracker timeDelta);
+
+    @Invoker public Gui.ContextualInfo callNextContextualInfoState();
+    @Accessor("contextualInfoBar") public Pair<ContextualInfo, ContextualBarRenderer> contextualInfoBar();
+    @Accessor("contextualInfoBarRenderers") public Map<ContextualInfo, Supplier<ContextualBarRenderer>> contextualInfoBarRenderers();
 }
